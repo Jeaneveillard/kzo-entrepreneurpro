@@ -1,0 +1,26 @@
+{
+  "name": "KZO EntrepreneurPro QC",
+  "short_name": "KZO Pro",
+  "description": "Application professionnelle pour entrepreneurs en construction au Québec",
+  "start_url": "./KZO_EntrepreneurPro_QC.html",
+  "display": "standalone",
+  "background_color": "#F5F6FA",
+  "theme_color": "#0D3B6E",
+  "orientation": "any",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"]
+}

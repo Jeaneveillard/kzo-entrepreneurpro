@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KZO EntrepreneurPro QC</title>
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0D3B6E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KZO Pro">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu: #0D3B6E;
+    --bleu-clair: #1A5EA8;
+    --or: #D4A017;
+    --or-clair: #F0C040;
+    --rouge: #C0392B;
+    --vert: #1B6B3A;
+    --vert-clair: #2ECC71;
+    --gris: #F5F6FA;
+    --gris-fonce: #2C3E50;
+    --texte: #1a1a2e;
+    --blanc: #ffffff;
+    --ombre: 0 4px 20px rgba(0,0,0,0.10);
+    --ombre-hover: 0 8px 32px rgba(13,59,110,0.18);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--gris); color: var(--texte); min-height: 100vh; }
+
+  /* HEADER */
+  header { background: var(--bleu); color: white; padding: 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.18); }
+  .header-inner { max-width: 1200px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-mark { width: 64px; height: 64px; flex-shrink: 0; }
+  .logo-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.5px; }
+  .logo-sub { font-size: 11px; opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; }
+  .header-badge { background: var(--or); color: var(--bleu); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; font-family: 'Syne', sans-serif; letter-spacing: 0.5px; }
+
+  /* NAV TABS */
+  nav { background: white; border-bottom: 2px solid #eaecf0; }
+  .nav-inner { max-width: 1200px; margin: auto; display: flex; overflow-x: auto; gap: 0; padding: 0 20px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-tab { display: flex; align-items: center; gap: 7px; padding: 14px 20px; font-size: 13.5px; font-weight: 500; color: #666; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; user-select: none; }
+  .nav-tab:hover { color: var(--bleu); background: #f0f4fb; }
+  .nav-tab.active { color: var(--bleu); border-bottom: 3px solid var(--or); font-weight: 600; }
+  .nav-icon { font-size: 16px; }
+
+  /* MAIN */
+  main { max-width: 1200px; margin: 0 auto; padding: 28px 20px 60px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* PAGE TITLE */
+  .page-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 26px; color: var(--bleu); margin-bottom: 6px; }
+  .page-sub { font-size: 14px; color: #666; margin-bottom: 24px; }
+
+  /* CARDS */
+  .card { background: white; border-radius: var(--radius); box-shadow: var(--ombre); padding: 24px; margin-bottom: 20px; }
+  .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; color: var(--bleu); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card-title-icon { font-size: 18px; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+
+  /* FORM ELEMENTS */
+  label { font-size: 13px; font-weight: 500; color: #444; display: block; margin-bottom: 5px; }
+  input, select, textarea { width: 100%; padding: 10px 13px; border: 1.5px solid #dde1e9; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--texte); background: white; transition: border 0.2s; outline: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--bleu-clair); box-shadow: 0 0 0 3px rgba(26,94,168,0.10); }
+  .form-group { margin-bottom: 16px; }
+  .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+
+  /* BUTTONS */
+  .btn { padding: 11px 22px; border: none; border-radius: var(--radius-sm); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 7px; }
+  .btn-primary { background: var(--bleu); color: white; }
+  .btn-primary:hover { background: var(--bleu-clair); box-shadow: var(--ombre-hover); transform: translateY(-1px); }
+  .btn-gold { background: var(--or); color: var(--bleu); }
+  .btn-gold:hover { background: var(--or-clair); transform: translateY(-1px); }
+  .btn-success { background: var(--vert); color: white; }
+  .btn-success:hover { background: #24884a; transform: translateY(-1px); }
+  .btn-outline { background: transparent; border: 1.5px solid var(--bleu); color: var(--bleu); }
+  .btn-outline:hover { background: #f0f4fb; }
+  .btn-danger { background: var(--rouge); color: white; }
+  .btn-sm { padding: 7px 14px; font-size: 12px; }
+
+  /* METRIC CARDS */
+  .metric-card { background: white; border-radius: var(--radius); box-shadow: var(--ombre); padding: 18px 20px; border-left: 4px solid var(--bleu); }
+  .metric-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .metric-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--bleu); }
+  .metric-sub { font-size: 12px; color: #aaa; margin-top: 4px; }
+  .metric-card.gold { border-left-color: var(--or); }
+  .metric-card.gold .metric-value { color: #996b00; }
+  .metric-card.green { border-left-color: var(--vert); }
+  .metric-card.green .metric-value { color: var(--vert); }
+  .metric-card.red { border-left-color: var(--rouge); }
+  .metric-card.red .metric-value { color: var(--rouge); }
+
+  /* BADGE */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; }
+  .badge-success { background: #e6f7ee; color: #1B6B3A; }
+  .badge-warning { background: #fff8e6; color: #996b00; }
+  .badge-danger { background: #fde8e6; color: #C0392B; }
+  .badge-info { background: #e8f0fb; color: #1A5EA8; }
+  .badge-gray { background: #f0f0f0; color: #555; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { background: #f5f6fa; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; padding: 10px 14px; text-align: left; border-bottom: 2px solid #eaecf0; }
+  td { padding: 12px 14px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+
+  /* RESULT BOX */
+  .result-box { background: linear-gradient(135deg, #0D3B6E 0%, #1A5EA8 100%); color: white; border-radius: var(--radius); padding: 24px; margin-top: 20px; }
+  .result-box h3 { font-family: 'Syne', sans-serif; font-size: 14px; opacity: 0.8; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
+  .result-item { background: rgba(255,255,255,0.12); border-radius: 10px; padding: 14px; }
+  .result-item-label { font-size: 11px; opacity: 0.75; margin-bottom: 4px; }
+  .result-item-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+
+  /* QUALIFICATION ITEM */
+  .qual-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border: 1.5px solid #eaecf0; border-radius: var(--radius-sm); margin-bottom: 10px; transition: border 0.2s; }
+  .qual-item:hover { border-color: var(--bleu-clair); }
+  .qual-check { width: 24px; height: 24px; border-radius: 50%; background: #e6f7ee; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; font-size: 13px; }
+  .qual-check.warn { background: #fff8e6; }
+  .qual-check.req { background: #fde8e6; }
+  .qual-title { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+  .qual-desc { font-size: 12.5px; color: #666; line-height: 1.5; }
+  .qual-link { font-size: 12px; color: var(--bleu-clair); text-decoration: none; font-weight: 500; }
+  .qual-link:hover { text-decoration: underline; }
+
+  /* PROGRESS BAR */
+  .progress-bar { height: 8px; background: #eaecf0; border-radius: 4px; overflow: hidden; margin-top: 6px; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+
+  /* ALERT */
+  .alert { padding: 14px 18px; border-radius: var(--radius-sm); font-size: 13.5px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 10px; }
+  .alert-info { background: #e8f0fb; color: #1A5EA8; border-left: 4px solid #1A5EA8; }
+  .alert-warning { background: #fff8e6; color: #996b00; border-left: 4px solid var(--or); }
+  .alert-success { background: #e6f7ee; color: #1B6B3A; border-left: 4px solid var(--vert); }
+  .alert-danger { background: #fde8e6; color: #C0392B; border-left: 4px solid var(--rouge); }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1.5px solid #eaecf0; margin: 20px 0; }
+
+  /* PRINT */
+  @media print {
+    header, nav, .btn, .no-print { display: none !important; }
+    .card { box-shadow: none; border: 1px solid #ddd; }
+    body { background: white; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header-inner { padding: 12px 16px; }
+    main { padding: 16px 12px 40px; }
+    .page-title { font-size: 20px; }
+    .nav-tab { padding: 12px 14px; font-size: 12px; }
+  }
+
+  /* SECTION HERO */
+  .hero { background: linear-gradient(135deg, #0D3B6E 0%, #1A5EA8 60%, #0D3B6E 100%); color: white; border-radius: var(--radius); padding: 32px 32px 28px; margin-bottom: 28px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; right: -40px; top: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(212,160,23,0.15); }
+  .hero::after { content: ''; position: absolute; right: 40px; bottom: -60px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.06); }
+  .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 28px; margin-bottom: 8px; }
+  .hero-sub { font-size: 14px; opacity: 0.8; max-width: 500px; line-height: 1.6; }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .hero-chip { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; font-size: 12px; font-weight: 500; padding: 5px 13px; border-radius: 20px; }
+
+  /* TOOLTIP */
+  .tooltip-icon { display: inline-flex; width: 16px; height: 16px; background: #c5d3e8; border-radius: 50%; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #1A5EA8; cursor: help; margin-left: 4px; }
+
+  /* SOUMISSION LINE ITEMS */
+  .line-items { border: 1.5px solid #eaecf0; border-radius: var(--radius-sm); overflow: hidden; }
+  .line-item { display: grid; grid-template-columns: 1fr auto auto auto auto; gap: 10px; align-items: center; padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 13.5px; }
+  .line-item:last-child { border-bottom: none; }
+  .line-item.header { background: #f5f6fa; font-weight: 600; font-size: 12px; text-transform: uppercase; color: #666; }
+  .line-item input { padding: 6px 9px; font-size: 13px; }
+  .line-delete { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; padding: 2px 6px; border-radius: 4px; transition: color 0.2s; }
+  .line-delete:hover { color: var(--rouge); background: #fde8e6; }
+
+  /* FOOTER */
+  footer { background: var(--bleu); color: rgba(255,255,255,0.6); text-align: center; padding: 18px; font-size: 12px; }
+  footer span { color: var(--or); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="11" fill="#D4A017"/>
+        <text x="32" y="38" text-anchor="middle" font-family="'Syne', Arial Black, sans-serif" font-weight="800" font-size="14" fill="#0D3B6E" letter-spacing="2">KZO</text>
+      </svg>
+      <div>
+        <div class="logo-text">EntrepreneurPro QC</div>
+        <div class="logo-sub">Outil de gestion — Québec</div>
+      </div>
+    </div>
+    <div class="header-badge">🍁 Conforme QC 2024</div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-tab active" onclick="showSection('tableau-bord')"><span class="nav-icon">📊</span> Tableau de bord</div>
+    <div class="nav-tab" onclick="showSection('qualifications')"><span class="nav-icon">🏆</span> Qualifications RBQ/CCQ</div>
+    <div class="nav-tab" onclick="showSection('soumission')"><span class="nav-icon">📋</span> Soumission</div>
+    <div class="nav-tab" onclick="showSection('main-oeuvre')"><span class="nav-icon">👷</span> Main-d'œuvre</div>
+    <div class="nav-tab" onclick="showSection('materiaux')"><span class="nav-icon">🧱</span> Matériaux</div>
+    <div class="nav-tab" onclick="showSection('conformite')"><span class="nav-icon">✅</span> Conformité CCB/CNB</div>
+    <div class="nav-tab" onclick="showSection('taxes')"><span class="nav-icon">💰</span> Taxes & Marges</div>
+    <div class="nav-tab" onclick="showSection('execution')"><span class="nav-icon">📅</span> Exécution / Gantt</div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- TABLEAU DE BORD -->
+  <section id="tableau-bord" class="section active">
+    <div class="hero">
+      <div class="hero-title">Bienvenue, entrepreneur! 👷</div>
+      <div class="hero-sub">Gérez vos soumissions, qualifications RBQ/CCQ et vérifications de conformité au Code du bâtiment du Québec, le tout en un seul outil.</div>
+      <div class="hero-chips">
+        <span class="hero-chip">✓ RBQ 2024</span>
+        <span class="hero-chip">✓ CCQ 2024</span>
+        <span class="hero-chip">✓ CNB 2020 (QC)</span>
+        <span class="hero-chip">✓ CSST/CNESST</span>
+        <span class="hero-chip">✓ TPS/TVQ inclus</span>
+      </div>
+    </div>
+
+    <div class="grid-4" style="margin-bottom:24px;">
+      <div class="metric-card">
+        <div class="metric-label">Soumissions actives</div>
+        <div class="metric-value" id="db-soumissions">0</div>
+        <div class="metric-sub">projets en cours</div>
+      </div>
+      <div class="metric-card gold">
+        <div class="metric-label">Valeur totale</div>
+        <div class="metric-value" id="db-valeur">0 $</div>
+        <div class="metric-sub">soumissions ouvertes</div>
+      </div>
+      <div class="metric-card green">
+        <div class="metric-label">Marge brute moy.</div>
+        <div class="metric-value" id="db-marge">0%</div>
+        <div class="metric-sub">sur projets actifs</div>
+      </div>
+      <div class="metric-card red">
+        <div class="metric-label">Qualifications</div>
+        <div class="metric-value">12</div>
+        <div class="metric-sub">catégories RBQ/CCQ</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">⚡</span> Accès rapide</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button class="btn btn-primary" onclick="showSection('soumission')">📋 Nouvelle soumission</button>
+          <button class="btn btn-gold" onclick="showSection('qualifications')">🏆 Vérifier mes qualifications</button>
+          <button class="btn btn-outline" onclick="showSection('materiaux')">🧱 Calculer les matériaux</button>
+          <button class="btn btn-outline" onclick="showSection('conformite')">✅ Vérifier la conformité</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">📌</span> Rappels & normes importantes</div>
+        <div class="alert alert-warning">⚠️ La <strong>licence RBQ</strong> doit être renouvelée annuellement avant le 31 mars.</div>
+        <div class="alert alert-info">ℹ️ Le <strong>Code national du bâtiment 2020</strong> est en vigueur au Québec depuis le 1er janvier 2024.</div>
+        <div class="alert alert-success">✅ Le dépôt de garantie de soumission est requis pour les contrats publics &gt; 100 000 $.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUALIFICATIONS -->
+  <section id="qualifications" class="section">
+    <div class="page-title">Qualifications RBQ & CCQ</div>
+    <div class="page-sub">Toutes les exigences légales pour exercer à titre d'entrepreneur au Québec</div>
+
+    <div class="alert alert-info">ℹ️ Source : Régie du bâtiment du Québec (RBQ) — Loi sur le bâtiment, L.R.Q., c. B-1.1 &amp; Code des métiers CCQ 2024.</div>
+
+    <!-- RBQ -->
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">🏛️</span> Licence d'entrepreneur — Régie du bâtiment du Québec (RBQ)</div>
+
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Licence d'entrepreneur général (catégorie 1.0) <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Exigée pour tout travail de construction résidentiel, commercial ou industriel &gt; 2 000 $. Doit être détenue par le responsable technique (RT) qui satisfait aux critères d'expérience et réussit l'examen RBQ.</div>
+          <div style="margin-top:6px;"><a href="https://www.rbq.gouv.qc.ca" class="qual-link" target="_blank" rel="noopener noreferrer" target="_blank">→ rbq.gouv.qc.ca</a></div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Responsable technique (RT) <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">La compagnie doit désigner un RT qui détient l'expérience requise (min. 3 ans dans le domaine concerné) et a réussi les examens de la RBQ. Le RT est responsable de la supervision des travaux.</div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check warn">⚠</div>
+        <div>
+          <div class="qual-title">Assurance responsabilité civile — min. 2 000 000 $ <span class="badge badge-warning">REQUIS</span></div>
+          <div class="qual-desc">Couverture minimale de 2 M$ par sinistre. Pour les contrats publics de grande envergure, une couverture de 5 M$ peut être exigée. À renouveler annuellement et à soumettre lors du renouvellement de licence.</div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check warn">⚠</div>
+        <div>
+          <div class="qual-title">Plan de garantie (résidentiel neuf) <span class="badge badge-warning">REQUIS résidentiel</span></div>
+          <div class="qual-desc">Obligatoire pour les bâtiments résidentiels neufs de 1 à 5 logements (Règlement sur le plan de garantie). Administré par Garantie Construction Résidentielle (GCR). Frais selon le type de projet.</div>
+          <div style="margin-top:6px;"><a href="https://www.garantiegcr.com" class="qual-link" target="_blank" rel="noopener noreferrer" target="_blank">→ garantiegcr.com</a></div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Inscription au registre des entreprises (REQ) <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Toute entreprise de construction doit être immatriculée au Registraire des entreprises du Québec. Numéro d'entreprise du Québec (NEQ) requis sur tous les documents officiels.</div>
+          <div style="margin-top:6px;"><a href="https://www.registreentreprises.gouv.qc.ca" class="qual-link" target="_blank" rel="noopener noreferrer" target="_blank">→ registreentreprises.gouv.qc.ca</a></div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Numéro de TPS/TVQ <span class="badge badge-danger">OBLIGATOIRE si &gt; 30 000 $ revenus</span></div>
+          <div class="qual-desc">Inscription obligatoire à Revenu Québec (TPS 5% + TVQ 9,975% = 14,975%). Les entreprises sous 30 000 $ de revenus annuels peuvent opter pour la petite fourniture.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CCQ -->
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">👷</span> Commission de la construction du Québec (CCQ)</div>
+
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Enregistrement à la CCQ <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Tout entrepreneur qui emploie des travailleurs dans l'industrie de la construction au Québec doit être enregistré auprès de la CCQ. Déclarations de paie obligatoires chaque période.</div>
+          <div style="margin-top:6px;"><a href="https://www.ccq.org" class="qual-link" target="_blank" rel="noopener noreferrer" target="_blank">→ ccq.org</a></div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Compétence CCQ — Carte de compétence <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Tous les travailleurs sur chantier doivent détenir une carte de compétence CCQ (apprenti, compagnon ou occupation). L'entrepreneur doit vérifier la validité des cartes de tous ses employés.</div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check warn">⚠</div>
+        <div>
+          <div class="qual-title">Cotisations CCQ — Avantages sociaux <span class="badge badge-warning">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Cotisations obligatoires : vacances (10,8%), fonds de formation, REER collectif, assurance collective. Le taux global d'avantages sociaux varie selon le secteur (résidentiel ~42,5%, génie civil/voirie ~52%, institutionnel/commercial ~57%).</div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">CNESST — Cotisation employeur <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">L'entrepreneur doit cotiser à la Commission des normes, de l'équité, de la santé et de la sécurité du travail (CNESST). Taux selon le secteur d'activité et le dossier de l'entreprise. Plan de prévention obligatoire pour chantiers &gt; 10 travailleurs.</div>
+        </div>
+      </div>
+
+      <div class="qual-item">
+        <div class="qual-check warn">⚠</div>
+        <div>
+          <div class="qual-title">ASP Construction — Formation Santé-Sécurité <span class="badge badge-warning">RECOMMANDÉ/REQUIS</span></div>
+          <div class="qual-desc">La formation en santé et sécurité est obligatoire pour certains types de chantiers. Le contremaître et le superviseur doivent suivre des formations spécifiques (travail en hauteur, espace clos, etc.).</div>
+          <div style="margin-top:6px;"><a href="https://www.asp-construction.org" class="qual-link" target="_blank" rel="noopener noreferrer" target="_blank">→ asp-construction.org</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catégories de licence -->
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">📂</span> Principales catégories de licence RBQ</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th>Description</th>
+              <th>Domaine</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>1.0</strong></td><td>Entrepreneur général</td><td>Tous secteurs</td><td><span class="badge badge-danger">Principale</span></td></tr>
+            <tr><td><strong>1.1</strong></td><td>Entrepreneur spécialisé — travaux généraux résidentiels</td><td>Résidentiel</td><td><span class="badge badge-info">Spécialisée</span></td></tr>
+            <tr><td><strong>2.0</strong></td><td>Charpenterie et menuiserie</td><td>Structure bois</td><td><span class="badge badge-info">Spécialisée</span></td></tr>
+            <tr><td><strong>2.1</strong></td><td>Maçonnerie</td><td>Maçonnerie</td><td><span class="badge badge-info">Spécialisée</span></td></tr>
+            <tr><td><strong>3.0</strong></td><td>Plomberie / chauffage</td><td>Mécanique</td><td><span class="badge badge-info">Spécialisée</span></td></tr>
+            <tr><td><strong>4.0</strong></td><td>Électricité</td><td>Électrique</td><td><span class="badge badge-info">Spécialisée</span></td></tr>
+            <tr><td><strong>5.0</strong></td><td>Peinture et décoration</td><td>Finition</td><td><span class="badge badge-info">Spécialisée</span></td></tr>
+            <tr><td><strong>7.0</strong></td><td>Excavation et terrassement</td><td>Génie civil</td><td><span class="badge badge-info">Spécialisée</span></td></tr>
+            <tr><td><strong>9.0</strong></td><td>Isolation et étanchéité</td><td>Enveloppe</td><td><span class="badge badge-info">Spécialisée</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOUMISSION -->
+  <section id="soumission" class="section">
+    <div class="page-title">Calculateur de soumission</div>
+    <div class="page-sub">Préparez une soumission professionnelle avec calcul automatique des taxes et marges</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">🏗️</span> Informations du projet</div>
+        <div class="form-group">
+          <label>Nom du projet</label>
+          <input type="text" id="s-nom" placeholder="Ex : Rénovation cuisine — M. Tremblay" maxlength="150" oninput="updateSoumission()">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Type de projet</label>
+            <select id="s-type" onchange="updateSoumission()">
+              <option value="res">Résidentiel</option>
+              <option value="com">Commercial</option>
+              <option value="inst">Institutionnel</option>
+              <option value="gc">Génie civil</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Superficie (pi²)</label>
+            <input type="number" id="s-superficie" placeholder="0" oninput="updateSoumission()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date de soumission</label>
+            <input type="date" id="s-date" oninput="updateSoumission()">
+          </div>
+          <div class="form-group">
+            <label>Validité (jours)</label>
+            <input type="number" id="s-validite" value="30" oninput="updateSoumission()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Client / Donneur d'ouvrage</label>
+          <input type="text" id="s-client" placeholder="Nom du client" maxlength="100" oninput="updateSoumission()">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">⚙️</span> Paramètres de calcul</div>
+        <div class="form-group">
+          <label>Marge bénéficiaire cible (%)</label>
+          <input type="range" id="s-marge" min="5" max="40" value="15" oninput="updateSoumission(); document.getElementById('s-marge-val').textContent=this.value+'%'">
+          <div style="text-align:right;font-size:13px;font-weight:600;color:var(--bleu);margin-top:4px;" id="s-marge-val">15%</div>
+        </div>
+        <div class="form-group">
+          <label>Frais généraux chantier (%)</label>
+          <input type="range" id="s-frais" min="0" max="20" value="8" oninput="updateSoumission(); document.getElementById('s-frais-val').textContent=this.value+'%'">
+          <div style="text-align:right;font-size:13px;font-weight:600;color:var(--bleu);margin-top:4px;" id="s-frais-val">8%</div>
+        </div>
+        <div class="form-group">
+          <label>Contingence (%)</label>
+          <input type="range" id="s-conting" min="0" max="15" value="5" oninput="updateSoumission(); document.getElementById('s-conting-val').textContent=this.value+'%'">
+          <div style="text-align:right;font-size:13px;font-weight:600;color:var(--bleu);margin-top:4px;" id="s-conting-val">5%</div>
+        </div>
+        <div class="form-group">
+          <label>Taxes applicables</label>
+          <select id="s-taxes" onchange="updateSoumission()">
+            <option value="both">TPS + TVQ (14,975%)</option>
+            <option value="tps">TPS seulement (5%)</option>
+            <option value="none">Aucune taxe (exonéré)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Postes de coût -->
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">📝</span> Postes de coûts
+        <button class="btn btn-gold btn-sm" onclick="ajouterLigne()" style="margin-left:auto;">+ Ajouter une ligne</button>
+      </div>
+      <div class="line-items">
+        <div class="line-item header">
+          <div>Description</div>
+          <div>Qté</div>
+          <div>Unité</div>
+          <div>Prix unit. ($)</div>
+          <div>Total</div>
+        </div>
+        <div id="lignes-container"></div>
+      </div>
+    </div>
+
+    <!-- Résultat -->
+    <div class="result-box">
+      <h3>Récapitulatif de la soumission</h3>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-item-label">Coût direct</div><div class="result-item-value" id="r-cout-direct">0,00 $</div></div>
+        <div class="result-item"><div class="result-item-label">Frais généraux</div><div class="result-item-value" id="r-frais-gen">0,00 $</div></div>
+        <div class="result-item"><div class="result-item-label">Contingence</div><div class="result-item-value" id="r-conting">0,00 $</div></div>
+        <div class="result-item"><div class="result-item-label">Marge bénéficiaire</div><div class="result-item-value" id="r-marge">0,00 $</div></div>
+        <div class="result-item"><div class="result-item-label">Sous-total (avant taxes)</div><div class="result-item-value" id="r-sous-total">0,00 $</div></div>
+        <div class="result-item"><div class="result-item-label">Taxes</div><div class="result-item-value" id="r-taxes">0,00 $</div></div>
+        <div class="result-item" style="background:rgba(212,160,23,0.25);"><div class="result-item-label">TOTAL SOUMISSION</div><div class="result-item-value" id="r-total" style="font-size:26px;">0,00 $</div></div>
+        <div class="result-item"><div class="result-item-label">Prix / pi²</div><div class="result-item-value" id="r-prix-pi2">—</div></div>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="imprimerSoumission()">🖨️ Imprimer / PDF</button>
+      <button class="btn btn-outline" onclick="reinitialiserSoumission()">🔄 Réinitialiser</button>
+    </div>
+  </section>
+
+  <!-- MAIN D'OEUVRE -->
+  <section id="main-oeuvre" class="section">
+    <div class="page-title">Calculateur de main-d'œuvre</div>
+    <div class="page-sub">Estimez les coûts de main-d'œuvre incluant les charges sociales CCQ et CNESST</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">👷</span> Paramètres main-d'œuvre</div>
+        <div class="form-group">
+          <label>Secteur CCQ</label>
+          <select id="mo-secteur" onchange="calculerMO()">
+            <option value="res">Résidentiel — taux de base</option>
+            <option value="gc">Génie civil et voirie</option>
+            <option value="ic">Institutionnel et commercial</option>
+            <option value="ind">Industriel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Métier / Corps de métier</label>
+          <select id="mo-metier" onchange="calculerMO()">
+            <option value="charpentier" data-taux="32.15">Charpentier-menuisier — 32,15 $/h</option>
+            <option value="electricien" data-taux="38.42">Électricien — 38,42 $/h</option>
+            <option value="plombier" data-taux="36.80">Plombier — 36,80 $/h</option>
+            <option value="macon" data-taux="30.90">Maçon — 30,90 $/h</option>
+            <option value="ferronnier" data-taux="31.55">Ferronnier de chantier — 31,55 $/h</option>
+            <option value="peintre" data-taux="28.10">Peintre — 28,10 $/h</option>
+            <option value="operateur" data-taux="33.25">Opérateur d'équipement lourd — 33,25 $/h</option>
+            <option value="laboureur" data-taux="24.85">Manœuvre/Laboureur — 24,85 $/h</option>
+            <option value="contremaître" data-taux="42.00">Contremaître — 42,00 $/h</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre de travailleurs</label>
+            <input type="number" id="mo-nb" value="1" min="1" oninput="calculerMO()">
+          </div>
+          <div class="form-group">
+            <label>Heures / travailleur</label>
+            <input type="number" id="mo-heures" value="40" min="1" oninput="calculerMO()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Type d'heures</label>
+          <select id="mo-type-h" onchange="calculerMO()">
+            <option value="1">Heures régulières (x1.0)</option>
+            <option value="1.5">Heures supplémentaires (x1.5)</option>
+            <option value="2">Double temps (x2.0)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">📊</span> Charges patronales CCQ</div>
+        <div class="alert alert-info">Taux 2024 — secteur sélectionné. Les charges varient selon le secteur et la convention collective.</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Charge</th><th>Taux</th><th>Montant</th></tr></thead>
+            <tbody id="mo-charges-body">
+              <tr><td colspan="3" style="text-align:center;color:#aaa;padding:20px;">Complétez les champs pour voir les charges</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <h3>Résultat main-d'œuvre</h3>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-item-label">Salaire brut</div><div class="result-item-value" id="mo-salaire-brut">0,00 $</div></div>
+        <div class="result-item"><div class="result-item-label">Charges sociales totales</div><div class="result-item-value" id="mo-charges-total">0,00 $</div></div>
+        <div class="result-item"><div class="result-item-label">Coût horaire réel</div><div class="result-item-value" id="mo-cout-horaire">0,00 $/h</div></div>
+        <div class="result-item" style="background:rgba(212,160,23,0.25);"><div class="result-item-label">COÛT TOTAL M.O.</div><div class="result-item-value" id="mo-cout-total" style="font-size:26px;">0,00 $</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATERIAUX -->
+  <section id="materiaux" class="section">
+    <div class="page-title">Estimateur complet de matériaux</div>
+    <div class="page-sub">Toutes les phases de construction — du débroussaillage aux finitions</div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">🏗️ Dimensions du projet (base de calcul)</div>
+      <div class="form-row">
+        <div class="form-group"><label>Superficie au sol (m²)</label><input type="number" id="p-sup" value="0" oninput="recalcAll()"></div>
+        <div class="form-group"><label>Superficie habitable (m²)</label><input type="number" id="p-hab" value="0" oninput="recalcAll()"></div>
+        <div class="form-group"><label>Nombre d'étages</label><input type="number" id="p-etages" value="1" min="1" oninput="recalcAll()"></div>
+        <div class="form-group"><label>Hauteur plafond (m)</label><input type="number" id="p-haut" value="2.44" step="0.01" oninput="recalcAll()"></div>
+        <div class="form-group"><label>Périmètre extérieur (m)</label><input type="number" id="p-perim" value="0" oninput="recalcAll()"></div>
+        <div class="form-group"><label>Pente de toit (x/12)</label>
+          <select id="p-pente" onchange="recalcAll()">
+            <option value="1.054">3/12</option><option value="1.083" selected>4/12</option>
+            <option value="1.118">5/12</option><option value="1.155">6/12</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+      <button class="btn btn-primary btn-sm mat-btn" onclick="showMat('debroussaillage')">🌿 Ph.1 Débroussaillage</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('implantation')">📐 Ph.2 Implantation</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('excavation')">⛏️ Ph.3 Excavation</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('fondations')">🧱 Ph.4 Fondations</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('structure')">🌲 Ph.5 Structure bois</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('toiture')">🏠 Ph.6 Toiture</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('enveloppe')">🧊 Ph.7 Enveloppe</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('electricite')">⚡ Ph.8 Électricité</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('plomberie')">🚿 Ph.9 Plomberie</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('chauffage')">🌡️ Ph.10 Chauffage/Méca</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('cloisons')">📋 Ph.11 Cloisons/Gypse</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('finition')">🎨 Ph.12 Finitions</button>
+      <button class="btn btn-outline btn-sm mat-btn" onclick="showMat('exterieur')">🌳 Ph.13 Aménagement ext.</button>
+      <button class="btn btn-gold btn-sm mat-btn" onclick="showMat('recapmat')">📊 Récapitulatif global</button>
+    </div>
+
+    <!-- PH 1 DÉBROUSSAILLAGE -->
+    <div id="mat-debroussaillage" class="mat-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🌿 Phase 1 — Débroussaillage & Préparation du terrain</div>
+          <div class="form-row">
+            <div class="form-group"><label>Surface à débroussailler (m²)</label><input type="number" id="db-surf" value="0" oninput="calcDB()"></div>
+            <div class="form-group"><label>Densité végétation</label>
+              <select id="db-veg" onchange="calcDB()">
+                <option value="1">Légère (herbes, arbustes)</option>
+                <option value="1.5">Moyenne (petits arbres)</option>
+                <option value="2.5">Dense (forêt/boisé)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Nombre d'arbres à abattre</label><input type="number" id="db-arbres" value="0" oninput="calcDB()"></div>
+          <div class="form-group"><label>Prix débroussaillage ($/m²)</label><input type="number" id="db-prix-m2" value="3.50" step="0.5" oninput="calcDB()"></div>
+          <div class="form-group"><label>Prix abattage par arbre ($)</label><input type="number" id="db-prix-arbre" value="250" oninput="calcDB()"></div>
+          <div class="form-group"><label>Enlèvement des souches</label>
+            <select id="db-souches" onchange="calcDB()">
+              <option value="0">Non</option>
+              <option value="150">Oui — 150 $/souche</option>
+              <option value="300">Oui (grosses) — 300 $/souche</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Disposition des matières (transport)</label>
+            <select id="db-transport" onchange="calcDB()">
+              <option value="0">Laissé sur place / brûlage</option>
+              <option value="800">Chargement et transport — 800 $</option>
+              <option value="2000">Plusieurs voyages — 2 000 $</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 1</div>
+          <div class="metric-card" style="margin-bottom:12px;"><div class="metric-label">Débroussaillage</div><div class="metric-value" id="db-r1">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:12px;"><div class="metric-label">Abattage d'arbres</div><div class="metric-value" id="db-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:12px;"><div class="metric-label">Souches + transport</div><div class="metric-value" id="db-r3">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 1</div><div class="metric-value" id="db-total">0,00 $</div></div>
+          <div class="alert alert-info" style="margin-top:14px;">ℹ️ Vérifier les règlements municipaux sur l'abattage d'arbres. Un permis peut être requis pour les arbres &gt; 20 cm de diamètre.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 2 IMPLANTATION -->
+    <div id="mat-implantation" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📐 Phase 2 — Implantation & Piquetage</div>
+          <div class="form-group"><label>Type de bâtiment</label>
+            <select id="impl-type" onchange="calcImpl()">
+              <option value="simple">Résidentiel simple (maison)</option>
+              <option value="complexe">Résidentiel complexe (L, U)</option>
+              <option value="com">Commercial / institutionnel</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Périmètre du bâtiment (m)</label><input type="number" id="impl-perim" value="0" oninput="calcImpl()"></div>
+            <div class="form-group"><label>Nb de coins / angles</label><input type="number" id="impl-coins" value="4" oninput="calcImpl()"></div>
+          </div>
+          <div class="form-group"><label>Prix implantation (arpenteur) ($)</label><input type="number" id="impl-arp" value="1800" oninput="calcImpl()"></div>
+          <div class="form-group"><label>Piquet en bois (qty)</label><input type="number" id="impl-piquets" value="20" oninput="calcImpl()"></div>
+          <div class="form-group"><label>Prix piquet ($)</label><input type="number" id="impl-prix-piquet" value="1.50" step="0.25" oninput="calcImpl()"></div>
+          <div class="form-group"><label>Ruban à mesurer + matériel</label><input type="number" id="impl-materiel" value="150" oninput="calcImpl()"></div>
+          <div class="form-group"><label>Certificat de localisation requis</label>
+            <select id="impl-cert" onchange="calcImpl()">
+              <option value="0">Non</option>
+              <option value="1200">Oui — ~1 200 $</option>
+              <option value="2000">Oui (complexe) — ~2 000 $</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 2</div>
+          <div class="metric-card" style="margin-bottom:12px;"><div class="metric-label">Honoraires arpenteur</div><div class="metric-value" id="impl-r1">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:12px;"><div class="metric-label">Matériel piquetage</div><div class="metric-value" id="impl-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:12px;"><div class="metric-label">Cert. localisation</div><div class="metric-value" id="impl-r3">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 2</div><div class="metric-value" id="impl-total">0,00 $</div></div>
+          <div class="alert alert-warning" style="margin-top:14px;">⚠️ Le piquetage par un arpenteur-géomètre (OAQ) est requis pour obtenir le permis de construction dans la plupart des municipalités du Québec.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 3 EXCAVATION -->
+    <div id="mat-excavation" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">⛏️ Phase 3 — Fouille & Excavation</div>
+          <div class="form-row">
+            <div class="form-group"><label>Longueur (m)</label><input type="number" id="exc-long" value="0" oninput="calcExc()"></div>
+            <div class="form-group"><label>Largeur (m)</label><input type="number" id="exc-larg" value="0" oninput="calcExc()"></div>
+          </div>
+          <div class="form-group"><label>Profondeur de fouille (m)</label><input type="number" id="exc-prof" value="1.8" step="0.1" oninput="calcExc()"></div>
+          <div class="form-group"><label>Type de sol</label>
+            <select id="exc-sol" onchange="calcExc()">
+              <option value="1.15">Sol meuble / remblai (foisonnement 15%)</option>
+              <option value="1.25" selected>Sol ordinaire / argile (25%)</option>
+              <option value="1.35">Sol difficile / gravier compact (35%)</option>
+              <option value="1.50">Roc fragmenté (50%)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Prix excavation ($/m³)</label><input type="number" id="exc-prix" value="45" oninput="calcExc()"></div>
+          <div class="form-group"><label>Granulat concassé 0-20 mm (m³) sous dalle</label><input type="number" id="exc-granulat" value="0" oninput="calcExc()"></div>
+          <div class="form-group"><label>Prix granulat livré ($/m³)</label><input type="number" id="exc-prix-gran" value="35" oninput="calcExc()"></div>
+          <div class="form-group"><label>Remblayage / backfill</label>
+            <select id="exc-rembl" onchange="calcExc()">
+              <option value="0">Non requis</option>
+              <option value="25">Oui — sol de site (25 $/m³)</option>
+              <option value="40">Oui — sable importé (40 $/m³)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Drain français (m linéaires)</label><input type="number" id="exc-drain" value="0" oninput="calcExc()"></div>
+          <div class="form-group"><label>Prix drain français ($/m)</label><input type="number" id="exc-prix-drain" value="35" oninput="calcExc()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 3</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Volume net (m³)</div><div class="metric-value" id="exc-vol-net">0,00</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Volume foisonné (transport)</div><div class="metric-value" id="exc-vol-foisonne">0,00 m³</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Granulat + drain</div><div class="metric-value" id="exc-r2">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 3</div><div class="metric-value" id="exc-total">0,00 $</div></div>
+          <div class="alert alert-warning" style="margin-top:14px;">⚠️ Profondeur hors-gel min. 1,5 m pour Montréal/Lanaudière. Consulter les plans de gel locaux (BNQ 2623-500).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 4 FONDATIONS -->
+    <div id="mat-fondations" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🧱 Phase 4 — Fondations & Béton</div>
+          <div class="form-group"><label>Résistance béton (MPa)</label>
+            <select id="fon-mpa" onchange="calcFon()">
+              <option value="20">20 MPa — fondations légères</option>
+              <option value="25" selected>25 MPa — standard résidentiel (CNB min.)</option>
+              <option value="30">30 MPa — commercial</option>
+              <option value="35">35 MPa — structurel lourd</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Prix béton livré ($/m³)</label><input type="number" id="fon-prix-beton" value="195" oninput="calcFon()"></div>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Semelles (footings)</legend>
+            <div class="form-row">
+              <div class="form-group"><label>Périmètre (m)</label><input type="number" id="fon-sem-perim" value="0" oninput="calcFon()"></div>
+              <div class="form-group"><label>Largeur (m)</label><input type="number" id="fon-sem-larg" value="0.6" step="0.05" oninput="calcFon()"></div>
+              <div class="form-group"><label>Épaisseur (m)</label><input type="number" id="fon-sem-ep" value="0.25" step="0.05" oninput="calcFon()"></div>
+            </div>
+          </fieldset>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Murs de fondation</legend>
+            <div class="form-row">
+              <div class="form-group"><label>Périmètre (m)</label><input type="number" id="fon-mur-perim" value="0" oninput="calcFon()"></div>
+              <div class="form-group"><label>Hauteur (m)</label><input type="number" id="fon-mur-haut" value="1.8" step="0.1" oninput="calcFon()"></div>
+              <div class="form-group"><label>Épaisseur (m)</label><input type="number" id="fon-mur-ep" value="0.25" step="0.05" oninput="calcFon()"></div>
+            </div>
+          </fieldset>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Dalle de plancher RDC</legend>
+            <div class="form-row">
+              <div class="form-group"><label>Superficie (m²)</label><input type="number" id="fon-dalle-sup" value="0" oninput="calcFon()"></div>
+              <div class="form-group"><label>Épaisseur (mm)</label><input type="number" id="fon-dalle-ep" value="100" oninput="calcFon()"></div>
+            </div>
+          </fieldset>
+          <div class="form-group" style="margin-top:12px;"><label>Coffrage ($/m² de surface coffrée)</label><input type="number" id="fon-coffrage" value="28" oninput="calcFon()"></div>
+          <div class="form-group"><label>Armature acier HA10 (kg/m³ béton)</label><input type="number" id="fon-acier-ratio" value="80" oninput="calcFon()"></div>
+          <div class="form-group"><label>Prix acier ($/kg)</label><input type="number" id="fon-prix-acier" value="1.85" step="0.05" oninput="calcFon()"></div>
+          <div class="form-group"><label>Membrane d'imperméabilisation</label>
+            <select id="fon-membrane" onchange="calcFon()">
+              <option value="0">Non</option>
+              <option value="18">Oui — membrane bitumineuse (18 $/m²)</option>
+              <option value="28">Oui — membrane spray 2 couches (28 $/m²)</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 4</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Volume béton total (m³)</div><div class="metric-value" id="fon-vol">0,00</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Camions béton (8 m³)</div><div class="metric-value" id="fon-camions">0</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Béton + coffrage</div><div class="metric-value" id="fon-r1">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Acier d'armature</div><div class="metric-value" id="fon-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Membrane imperméabilisation</div><div class="metric-value" id="fon-r3">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 4</div><div class="metric-value" id="fon-total">0,00 $</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 5 STRUCTURE -->
+    <div id="mat-structure" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🌲 Phase 5 — Structure bois (ossature)</div>
+          <div class="form-row">
+            <div class="form-group"><label>Superficie plancher (m²)</label><input type="number" id="str-sup" value="0" oninput="calcStr()"></div>
+            <div class="form-group"><label>Périmètre murs ext. (m)</label><input type="number" id="str-perim" value="0" oninput="calcStr()"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Hauteur murs (m)</label><input type="number" id="str-haut" value="2.44" step="0.01" oninput="calcStr()"></div>
+            <div class="form-group"><label>Nombre d'étages</label><input type="number" id="str-etages" value="1" min="1" oninput="calcStr()"></div>
+          </div>
+          <div class="form-group"><label>Espacement solives/montants</label>
+            <select id="str-esp" onchange="calcStr()">
+              <option value="400" selected>400 mm (16")</option>
+              <option value="300">300 mm (12")</option>
+              <option value="600">600 mm (24")</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Prix moyen bois d'œuvre ($/pied linéaire)</label><input type="number" id="str-prix-bo" value="1.20" step="0.05" oninput="calcStr()"></div>
+          <div class="form-group"><label>Contreplaqué structural 5/8" ($/feuille)</label><input type="number" id="str-prix-cp" value="55" oninput="calcStr()"></div>
+          <div class="form-group"><label>Quincaillerie / connecteurs (%coût bois)</label><input type="number" id="str-quincail" value="8" oninput="calcStr()"></div>
+          <div class="form-group"><label>Poutres LVL / engineered (forfait)</label><input type="number" id="str-lvl" value="0" oninput="calcStr()"></div>
+          <div class="form-group"><label>Poutrelles d'acier (forfait)</label><input type="number" id="str-acier" value="0" oninput="calcStr()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 5</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Pieds linéaires bois d'œuvre</div><div class="metric-value" id="str-pl">0</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Feuilles contreplaqué</div><div class="metric-value" id="str-feuilles">0</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Bois + contreplaqué</div><div class="metric-value" id="str-r1">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Quincaillerie + LVL + acier</div><div class="metric-value" id="str-r2">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 5</div><div class="metric-value" id="str-total">0,00 $</div></div>
+          <div class="alert alert-info" style="margin-top:14px;">ℹ️ CNB 2020 Art. 9.23 : traitement CCA requis pour bois en contact avec le béton ou le sol.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 6 TOITURE -->
+    <div id="mat-toiture" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🏠 Phase 6 — Toiture</div>
+          <div class="form-row">
+            <div class="form-group"><label>Surface en plan (m²)</label><input type="number" id="toit-sup" value="0" oninput="calcToit()"></div>
+            <div class="form-group"><label>Débord de toit (m)</label><input type="number" id="toit-debord" value="0.6" step="0.1" oninput="calcToit()"></div>
+          </div>
+          <div class="form-group"><label>Type de revêtement</label>
+            <select id="toit-type" onchange="calcToit()">
+              <option value="asphalte">Bardeaux d'asphalte 3 tabs — 30 ans</option>
+              <option value="architectural">Bardeaux architecturaux — 40 ans</option>
+              <option value="acier">Tôle profilée acier — 50 ans</option>
+              <option value="cedre">Bardeaux de cèdre — 25 ans</option>
+              <option value="membrane">Membrane TPO/EPDM (toit plat)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Membrane sous-toiture (barrière)</label>
+            <select id="toit-membrane" onchange="calcToit()">
+              <option value="3">Feutre 15 lb — 3 $/m²</option>
+              <option value="8" selected>Membrane auto-adhésive — 8 $/m²</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Ventilation de toit</label>
+            <select id="toit-vent" onchange="calcToit()">
+              <option value="500">Standard (soffites + faîtière) — 500 $</option>
+              <option value="1200">Complète avec turbines — 1 200 $</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Solins / contre-solins (m linéaires)</label><input type="number" id="toit-solins" value="0" oninput="calcToit()"></div>
+          <div class="form-group"><label>Prix solins ($/m)</label><input type="number" id="toit-prix-solins" value="22" oninput="calcToit()"></div>
+          <div class="form-group"><label>Prix revêtement ($/m² posé)</label><input type="number" id="toit-prix" value="45" oninput="calcToit()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 6</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Surface réelle de toit (m²)</div><div class="metric-value" id="toit-surf-reelle">0,00</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Surface à commander (+10%)</div><div class="metric-value" id="toit-surf-cmd">0,00 m²</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Revêtement</div><div class="metric-value" id="toit-r1">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Membrane + ventilation + solins</div><div class="metric-value" id="toit-r2">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 6</div><div class="metric-value" id="toit-total">0,00 $</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 7 ENVELOPPE -->
+    <div id="mat-enveloppe" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🧊 Phase 7 — Enveloppe (isolation, revêtement ext., fenêtres)</div>
+          <div class="form-row">
+            <div class="form-group"><label>Surface murs extérieurs (m²)</label><input type="number" id="env-surf-mur" value="0" oninput="calcEnv()"></div>
+            <div class="form-group"><label>Surface plafond/toit (m²)</label><input type="number" id="env-surf-toit" value="0" oninput="calcEnv()"></div>
+          </div>
+          <div class="form-group"><label>Isolation murs (type)</label>
+            <select id="env-iso-mur" onchange="calcEnv()">
+              <option value="12">Laine minérale R-22 — 12 $/m²</option>
+              <option value="15">Fibre de verre haute densité R-24 — 15 $/m²</option>
+              <option value="25">Polyuréthane giclé R-28 — 25 $/m²</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Isolation toit/plafond (type)</label>
+            <select id="env-iso-toit" onchange="calcEnv()">
+              <option value="18">Cellulose soufflée R-50 — 18 $/m²</option>
+              <option value="22">Laine minérale R-51 — 22 $/m²</option>
+              <option value="35">Polyuréthane giclé R-40+ — 35 $/m²</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Pare-vapeur + coupe-vent ($/m²)</label><input type="number" id="env-parevap" value="4.50" step="0.5" oninput="calcEnv()"></div>
+          <div class="form-group"><label>Revêtement extérieur</label>
+            <select id="env-rev-ext" onchange="calcEnv()">
+              <option value="40">Vinyle — 40 $/m²</option>
+              <option value="65">Fibre de ciment (Hardie) — 65 $/m²</option>
+              <option value="85">Brique face — 85 $/m²</option>
+              <option value="120">Pierre naturelle — 120 $/m²</option>
+              <option value="55">Bois ou composite — 55 $/m²</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Nombre de fenêtres</label><input type="number" id="env-nb-fen" value="0" oninput="calcEnv()"></div>
+          <div class="form-group"><label>Prix moyen par fenêtre (posée)</label><input type="number" id="env-prix-fen" value="850" oninput="calcEnv()"></div>
+          <div class="form-group"><label>Nombre de portes extérieures</label><input type="number" id="env-nb-porte" value="2" oninput="calcEnv()"></div>
+          <div class="form-group"><label>Prix moyen par porte ext. (posée)</label><input type="number" id="env-prix-porte" value="1200" oninput="calcEnv()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 7</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Isolation murs + toit</div><div class="metric-value" id="env-r1">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Pare-vapeur / coupe-vent</div><div class="metric-value" id="env-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Revêtement extérieur</div><div class="metric-value" id="env-r3">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Fenêtres + portes</div><div class="metric-value" id="env-r4">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 7</div><div class="metric-value" id="env-total">0,00 $</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 8 MECA/ELEC/PLO -->
+    <!-- PH 8 ÉLECTRICITÉ -->
+    <div id="mat-electricite" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">⚡ Phase 8 — Électricité</div>
+          <div class="alert alert-danger" style="margin-bottom:14px;">⚠️ Licence RBQ cat. 4.0 obligatoire. Inspection Hydro-Québec requise avant mise en service.</div>
+          <div class="form-group"><label>Panneau électrique principal</label>
+            <select id="elec-panel" onchange="calcElec()">
+              <option value="3200">100A monophasé — 3 200 $</option>
+              <option value="5500" selected>200A monophasé — 5 500 $</option>
+              <option value="8500">200A triphasé — 8 500 $</option>
+              <option value="12000">400A — 12 000 $</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Superficie à câbler (m²)</label><input type="number" id="elec-sup" value="0" oninput="calcElec()"></div>
+          <div class="form-group"><label>Câblage NMD90 / prix ($/m²)</label>
+            <select id="elec-cable-type" onchange="calcElec()">
+              <option value="45">Résidentiel de base — 45 $/m²</option>
+              <option value="60" selected>Résidentiel standard — 60 $/m²</option>
+              <option value="85">Résidentiel haut de gamme — 85 $/m²</option>
+              <option value="120">Commercial / institutionnel — 120 $/m²</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Nb de prises de courant (120V)</label><input type="number" id="elec-prises120" value="0" oninput="calcElec()"></div>
+          <div class="form-group"><label>Prix par prise 120V (posée)</label><input type="number" id="elec-prix-prise120" value="45" oninput="calcElec()"></div>
+          <div class="form-group"><label>Nb de prises 240V (cuisinière, sécheuse…)</label><input type="number" id="elec-prises240" value="0" oninput="calcElec()"></div>
+          <div class="form-group"><label>Prix par prise 240V (posée)</label><input type="number" id="elec-prix-prise240" value="120" oninput="calcElec()"></div>
+          <div class="form-group"><label>Nb d'interrupteurs / gradateurs</label><input type="number" id="elec-interrupteurs" value="0" oninput="calcElec()"></div>
+          <div class="form-group"><label>Prix par interrupteur (posé)</label><input type="number" id="elec-prix-inter" value="55" oninput="calcElec()"></div>
+          <div class="form-group"><label>Détecteurs de fumée / CO (nb)</label><input type="number" id="elec-detecteurs" value="0" oninput="calcElec()"></div>
+          <div class="form-group"><label>Luminaires encastrés / suspendus (nb)</label><input type="number" id="elec-luminaires" value="0" oninput="calcElec()"></div>
+          <div class="form-group"><label>Prix moyen par luminaire posé ($)</label><input type="number" id="elec-prix-luminaire" value="180" oninput="calcElec()"></div>
+          <div class="form-group"><label>Entrée de service (forfait)</label>
+            <select id="elec-entree" onchange="calcElec()">
+              <option value="0">Non requis (existant)</option>
+              <option value="2500">Aérien standard — 2 500 $</option>
+              <option value="5500">Souterrain — 5 500 $</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Tableau secondaire sous-sol / garage ($)</label><input type="number" id="elec-tableau-sec" value="0" oninput="calcElec()"></div>
+          <div class="form-group"><label>Bornes de recharge VÉ (nb)</label><input type="number" id="elec-borne-ve" value="0" oninput="calcElec()"></div>
+          <div class="form-group"><label>Prix par borne VÉ niveau 2 (installée)</label><input type="number" id="elec-prix-borne" value="1800" oninput="calcElec()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 8 Électricité</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Panneau + entrée de service</div><div class="metric-value" id="elec-r1">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Câblage ($/m²)</div><div class="metric-value" id="elec-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Prises 120V + 240V</div><div class="metric-value" id="elec-r3">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Interrupteurs + détecteurs</div><div class="metric-value" id="elec-r4">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Luminaires</div><div class="metric-value" id="elec-r5">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Tableau sec. + bornes VÉ</div><div class="metric-value" id="elec-r6">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 8 — Électricité</div><div class="metric-value" id="elec-total">0,00 $</div></div>
+          <div class="alert alert-info" style="margin-top:14px;">ℹ️ Le Code de l'électricité du Québec (CEQ) exige des détecteurs de fumée dans chaque chambre et dans les corridors. Détecteur CO obligatoire si appareil à combustion.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 9 PLOMBERIE -->
+    <div id="mat-plomberie" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🚿 Phase 9 — Plomberie</div>
+          <div class="alert alert-danger" style="margin-bottom:14px;">⚠️ Licence RBQ cat. 3.0 obligatoire. Inspection de la Régie du bâtiment requise avant remblayage des tranchées.</div>
+          <div class="form-group"><label>Type de tuyauterie — alimentation</label>
+            <select id="plo-tuyau-alim" onchange="calcPlo()">
+              <option value="18">Cuivre type L — 18 $/m</option>
+              <option value="12" selected>PEX (polyéthylène réticulé) — 12 $/m</option>
+              <option value="22">Cuivre type K (commerciale) — 22 $/m</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Type de tuyauterie — évacuation (drain)</label>
+            <select id="plo-tuyau-drain" onchange="calcPlo()">
+              <option value="14" selected>PVC — 14 $/m</option>
+              <option value="28">Fonte (immeuble &gt;3 étages) — 28 $/m</option>
+              <option value="22">ABS — 22 $/m</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Longueur totale tuyauterie alimentation (m)</label><input type="number" id="plo-long-alim" value="0" oninput="calcPlo()"></div>
+          <div class="form-group"><label>Longueur totale drain/évent (m)</label><input type="number" id="plo-long-drain" value="0" oninput="calcPlo()"></div>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Salles de bain</legend>
+            <div class="form-row">
+              <div class="form-group"><label>SDB complètes (bain/douche + lavabo + toilette)</label><input type="number" id="plo-sdb-compl" value="0" oninput="calcPlo()"></div>
+              <div class="form-group"><label>Forfait / SDB complète ($)</label><input type="number" id="plo-prix-sdb" value="4500" oninput="calcPlo()"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>SDB demi (lavabo + toilette)</label><input type="number" id="plo-sdb-demi" value="0" oninput="calcPlo()"></div>
+              <div class="form-group"><label>Forfait / demi-SDB ($)</label><input type="number" id="plo-prix-demi-sdb" value="2200" oninput="calcPlo()"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Douche italienne sur mesure</label><input type="number" id="plo-douche" value="0" oninput="calcPlo()"></div>
+              <div class="form-group"><label>Forfait / douche ($)</label><input type="number" id="plo-prix-douche" value="1800" oninput="calcPlo()"></div>
+            </div>
+          </fieldset>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Cuisine</legend>
+            <div class="form-group"><label>Évier double + robinetterie</label>
+              <select id="plo-evier" onchange="calcPlo()">
+                <option value="850">Standard — 850 $</option>
+                <option value="1400" selected>Mi-gamme — 1 400 $</option>
+                <option value="2800">Haut de gamme — 2 800 $</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Lave-vaisselle (raccordement)</label><input type="number" id="plo-lv" value="250" oninput="calcPlo()"></div>
+          </fieldset>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Chauffe-eau</legend>
+            <div class="form-group"><label>Type de chauffe-eau</label>
+              <select id="plo-ceau" onchange="calcPlo()">
+                <option value="900">Électrique 60 gal (227 L) — 900 $</option>
+                <option value="1400" selected>Électrique 80 gal (302 L) — 1 400 $</option>
+                <option value="1800">Gaz naturel — 1 800 $</option>
+                <option value="3800">Thermopompe (haute efficacité) — 3 800 $</option>
+                <option value="2200">Instantané (sans réservoir) — 2 200 $</option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Autres postes</legend>
+            <div class="form-group"><label>Robinet extérieur (nb)</label><input type="number" id="plo-rob-ext" value="2" oninput="calcPlo()"></div>
+            <div class="form-group"><label>Drain de plancher sous-sol / garage</label><input type="number" id="plo-drain-pl" value="0" oninput="calcPlo()"></div>
+            <div class="form-group"><label>Pompe de puisard</label>
+              <select id="plo-puisard" onchange="calcPlo()">
+                <option value="0">Non requis</option>
+                <option value="1200">Simple — 1 200 $</option>
+                <option value="2400">Double (+ batterie secours) — 2 400 $</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Adoucisseur / filtre à eau</label>
+              <select id="plo-filtre" onchange="calcPlo()">
+                <option value="0">Non</option>
+                <option value="2500">Adoucisseur — 2 500 $</option>
+                <option value="4500">Osmose inverse + adoucisseur — 4 500 $</option>
+              </select>
+            </div>
+          </fieldset>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 9 Plomberie</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Tuyauterie alimentation</div><div class="metric-value" id="plo-r1">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Drain & évent (PVC/fonte)</div><div class="metric-value" id="plo-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Salles de bain complètes</div><div class="metric-value" id="plo-r3">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Demi-SDB + douches</div><div class="metric-value" id="plo-r4">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Cuisine (évier + LV)</div><div class="metric-value" id="plo-r5">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Chauffe-eau</div><div class="metric-value" id="plo-r6">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Robinets ext. + drain + puisard + filtre</div><div class="metric-value" id="plo-r7">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 9 — Plomberie</div><div class="metric-value" id="plo-total">0,00 $</div></div>
+          <div class="alert alert-info" style="margin-top:14px;">ℹ️ Le Code de plomberie du Québec exige une pression min. de 150 kPa et max. 550 kPa. Clapet anti-retour obligatoire sur l'alimentation principale.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 10 CHAUFFAGE / MÉCANIQUE -->
+    <div id="mat-chauffage" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🌡️ Phase 10 — Chauffage, Climatisation & Ventilation (CVC)</div>
+          <div class="form-group"><label>Superficie à climatiser / chauffer (m²)</label><input type="number" id="cvc-sup" value="0" oninput="calcCVC()"></div>
+          <div class="form-group"><label>Système de chauffage principal</label>
+            <select id="cvc-chauf" onchange="calcCVC()">
+              <option value="5500">Plinthes électriques — 5 500 $</option>
+              <option value="12000">Thermopompe centrale split — 12 000 $</option>
+              <option value="18000">Thermopompe centrale ducted — 18 000 $</option>
+              <option value="25000">Thermopompe géothermique — 25 000 $</option>
+              <option value="16000">Chaudière gaz naturel + rad. — 16 000 $</option>
+              <option value="9000">Plancher radiant électrique — 9 000 $</option>
+              <option value="14000">Plancher radiant hydronique — 14 000 $</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Nb têtes murales mini-split (zones)</label><input type="number" id="cvc-minisplit" value="0" oninput="calcCVC()"></div>
+          <div class="form-group"><label>Prix par tête mini-split (posée)</label><input type="number" id="cvc-prix-ms" value="2800" oninput="calcCVC()"></div>
+          <div class="form-group"><label>Gaine de ventilation (m linéaires)</label><input type="number" id="cvc-gaine" value="0" oninput="calcCVC()"></div>
+          <div class="form-group"><label>Prix gaine ($/m)</label><input type="number" id="cvc-prix-gaine" value="45" oninput="calcCVC()"></div>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">VRC — Ventilateur récupérateur de chaleur (obligatoire au QC)</legend>
+            <div class="form-group"><label>Type de VRC</label>
+              <select id="cvc-vrc" onchange="calcCVC()">
+                <option value="3200">Standard résidentiel (75-150 cfm) — 3 200 $</option>
+                <option value="5500">Haute capacité (150-300 cfm) — 5 500 $</option>
+                <option value="8500">Commercial — 8 500 $</option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Ventilation spécifique</legend>
+            <div class="form-row">
+              <div class="form-group"><label>Hotte de cuisine ($/unité)</label><input type="number" id="cvc-hotte" value="0" oninput="calcCVC()"></div>
+              <div class="form-group"><label>Sèche-linge (évent, forfait)</label><input type="number" id="cvc-sechage" value="350" oninput="calcCVC()"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Ventilation SDB (nb)</label><input type="number" id="cvc-vent-sdb" value="0" oninput="calcCVC()"></div>
+              <div class="form-group"><label>Prix / ventilateur SDB ($)</label><input type="number" id="cvc-prix-vent" value="280" oninput="calcCVC()"></div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 10 CVC</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Chauffage principal</div><div class="metric-value" id="cvc-r1">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Mini-splits additionnels</div><div class="metric-value" id="cvc-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Gaines de ventilation</div><div class="metric-value" id="cvc-r3">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">VRC (obligatoire QC)</div><div class="metric-value" id="cvc-r4">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Hotte + évent séchage + ventilateurs SDB</div><div class="metric-value" id="cvc-r5">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 10 — CVC</div><div class="metric-value" id="cvc-total">0,00 $</div></div>
+          <div class="alert alert-warning" style="margin-top:14px;">⚠️ VRC obligatoire dans toutes les nouvelles constructions résidentielles au Québec depuis 2012 (Art. 9.32 CNB 2020). Débit min. 0,35 L/s par m².</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 9 CLOISONS -->
+    <div id="mat-cloisons" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📋 Phase 9 — Cloisons intérieures & Gypse</div>
+          <div class="form-row">
+            <div class="form-group"><label>Périmètre total des murs (m)</label><input type="number" id="clo-perim" value="0" oninput="calcClo()"></div>
+            <div class="form-group"><label>Hauteur (m)</label><input type="number" id="clo-haut" value="2.44" step="0.01" oninput="calcClo()"></div>
+          </div>
+          <div class="form-group"><label>Superficie plafonds (m²)</label><input type="number" id="clo-plafond" value="0" oninput="calcClo()"></div>
+          <div class="form-group"><label>Déductions ouvertures (m²)</label><input type="number" id="clo-ouv" value="0" oninput="calcClo()"></div>
+          <div class="form-group"><label>Type gypse murs</label>
+            <select id="clo-ep-mur" onchange="calcClo()">
+              <option value="19" selected>1/2" (12,7mm) standard — 19 $/panneau</option>
+              <option value="25">5/8" (15,9mm) type X coupe-feu — 25 $/panneau</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Type gypse plafond</label>
+            <select id="clo-ep-plaf" onchange="calcClo()">
+              <option value="19" selected>1/2" standard — 19 $/panneau</option>
+              <option value="28">5/8" résistant humidité — 28 $/panneau</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Montants métalliques intérieurs ($/m²)</label><input type="number" id="clo-montants" value="8" oninput="calcClo()"></div>
+          <div class="form-group"><label>Ruban + composé à joints ($/m²)</label><input type="number" id="clo-joints" value="6" oninput="calcClo()"></div>
+          <div class="form-group"><label>Nb portes intérieures</label><input type="number" id="clo-nb-porte" value="0" oninput="calcClo()"></div>
+          <div class="form-group"><label>Prix moyen porte intérieure (posée)</label><input type="number" id="clo-prix-porte" value="450" oninput="calcClo()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 9</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Panneaux gypse murs</div><div class="metric-value" id="clo-pan-mur">0</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Panneaux gypse plafond</div><div class="metric-value" id="clo-pan-plaf">0</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Gypse + montants + joints</div><div class="metric-value" id="clo-r1">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Portes intérieures</div><div class="metric-value" id="clo-r2">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 9</div><div class="metric-value" id="clo-total">0,00 $</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 10 FINITIONS -->
+    <div id="mat-finition" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🎨 Phase 10 — Finitions intérieures</div>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Peinture</legend>
+            <div class="form-group"><label>Surface à peindre (murs + plafonds, m²)</label><input type="number" id="fin-surf-peinture" value="0" oninput="calcFin()"></div>
+            <div class="form-group"><label>Qualité de peinture</label>
+              <select id="fin-peinture-type" onchange="calcFin()">
+                <option value="8">Économique — 8 $/m² (2 couches)</option>
+                <option value="14" selected>Qualité standard — 14 $/m² (2 couches)</option>
+                <option value="22">Haut de gamme — 22 $/m² (3 couches)</option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Revêtements de plancher</legend>
+            <div class="form-row">
+              <div class="form-group"><label>Carrelage (m²)</label><input type="number" id="fin-carrelage" value="0" oninput="calcFin()"></div>
+              <div class="form-group"><label>Prix carrelage ($/m² posé)</label><input type="number" id="fin-prix-carrelage" value="75" oninput="calcFin()"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Plancher flottant (m²)</label><input type="number" id="fin-flottant" value="0" oninput="calcFin()"></div>
+              <div class="form-group"><label>Prix flottant ($/m² posé)</label><input type="number" id="fin-prix-flottant" value="55" oninput="calcFin()"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Plancher bois franc (m²)</label><input type="number" id="fin-bois-franc" value="0" oninput="calcFin()"></div>
+              <div class="form-group"><label>Prix bois franc ($/m² posé)</label><input type="number" id="fin-prix-bois-franc" value="95" oninput="calcFin()"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Tapis / moquette (m²)</label><input type="number" id="fin-tapis" value="0" oninput="calcFin()"></div>
+              <div class="form-group"><label>Prix tapis ($/m² posé)</label><input type="number" id="fin-prix-tapis" value="35" oninput="calcFin()"></div>
+            </div>
+          </fieldset>
+          <fieldset style="border:1px solid #eee;border-radius:8px;padding:12px;">
+            <legend style="font-size:12px;color:#888;padding:0 6px;">Menuiserie intérieure</legend>
+            <div class="form-group"><label>Armoires de cuisine (ml de bas)</label><input type="number" id="fin-arm-ml" value="0" oninput="calcFin()"></div>
+            <div class="form-group"><label>Prix armoires ($/ml installé)</label><input type="number" id="fin-arm-prix" value="1200" oninput="calcFin()"></div>
+            <div class="form-group"><label>Comptoirs (ml)</label><input type="number" id="fin-cpt-ml" value="0" oninput="calcFin()"></div>
+            <div class="form-group"><label>Prix comptoirs ($/ml)</label>
+              <select id="fin-cpt-type" onchange="calcFin()">
+                <option value="250">Stratifié — 250 $/ml</option>
+                <option value="650" selected>Quartz — 650 $/ml</option>
+                <option value="900">Granit — 900 $/ml</option>
+                <option value="1800">Marbre — 1 800 $/ml</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Moulures / plinthes / cadrages (m linéaires)</label><input type="number" id="fin-moul" value="0" oninput="calcFin()"></div>
+            <div class="form-group"><label>Prix moulures ($/m)</label><input type="number" id="fin-prix-moul" value="8" oninput="calcFin()"></div>
+          </fieldset>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 10</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Peinture</div><div class="metric-value" id="fin-r1">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Carrelage</div><div class="metric-value" id="fin-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Plancher flottant</div><div class="metric-value" id="fin-r3">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Bois franc</div><div class="metric-value" id="fin-r4">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Tapis</div><div class="metric-value" id="fin-r5">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Armoires + comptoirs</div><div class="metric-value" id="fin-r6">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Moulures / menuiserie</div><div class="metric-value" id="fin-r7">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 10</div><div class="metric-value" id="fin-total">0,00 $</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PH 11 EXTÉRIEUR -->
+    <div id="mat-exterieur" class="mat-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🌳 Phase 11 — Aménagement extérieur</div>
+          <div class="form-row">
+            <div class="form-group"><label>Entrée pavée (m²)</label><input type="number" id="ext-entree" value="0" oninput="calcExt()"></div>
+            <div class="form-group"><label>Type de surface</label>
+              <select id="ext-type-entree" onchange="calcExt()">
+                <option value="50">Asphalte — 50 $/m²</option>
+                <option value="85">Pavé uni — 85 $/m²</option>
+                <option value="130">Béton décoratif — 130 $/m²</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Terrasse/patio (m²)</label><input type="number" id="ext-terrasse" value="0" oninput="calcExt()"></div>
+            <div class="form-group"><label>Type terrasse</label>
+              <select id="ext-type-ter" onchange="calcExt()">
+                <option value="60">Bois traité — 60 $/m²</option>
+                <option value="90">Composite — 90 $/m²</option>
+                <option value="110">Ipe/Cèdre — 110 $/m²</option>
+                <option value="130">Pavé / dalle — 130 $/m²</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Clôture (m linéaires)</label><input type="number" id="ext-cloture" value="0" oninput="calcExt()"></div>
+          <div class="form-group"><label>Type clôture ($/m)</label>
+            <select id="ext-type-cloture" onchange="calcExt()">
+              <option value="35">Chaîne galvanisée — 35 $/m</option>
+              <option value="65">Bois privatif — 65 $/m</option>
+              <option value="90">Composite/vinyle — 90 $/m</option>
+              <option value="150">Aluminium ornemental — 150 $/m</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Gazon / ensemencement (m²)</label><input type="number" id="ext-gazon" value="0" oninput="calcExt()"></div>
+          <div class="form-group"><label>Prix gazon ($/m²)</label>
+            <select id="ext-type-gazon" onchange="calcExt()">
+              <option value="3">Semis — 3 $/m²</option>
+              <option value="12" selected>Gazon en plaques — 12 $/m²</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Arbres / arbustes (nb)</label><input type="number" id="ext-arbres" value="0" oninput="calcExt()"></div>
+          <div class="form-group"><label>Prix moyen par plant ($)</label><input type="number" id="ext-prix-arbre" value="150" oninput="calcExt()"></div>
+          <div class="form-group"><label>Escalier extérieur (forfait)</label><input type="number" id="ext-escalier" value="0" oninput="calcExt()"></div>
+          <div class="form-group"><label>Éclairage extérieur (forfait)</label><input type="number" id="ext-eclairage" value="0" oninput="calcExt()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Résultats — Phase 11</div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Entrée / stationnement</div><div class="metric-value" id="ext-r1">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Terrasse / patio</div><div class="metric-value" id="ext-r2">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Clôture</div><div class="metric-value" id="ext-r3">0,00 $</div></div>
+          <div class="metric-card" style="margin-bottom:10px;"><div class="metric-label">Gazon + végétaux</div><div class="metric-value" id="ext-r4">0,00 $</div></div>
+          <div class="metric-card gold" style="margin-bottom:10px;"><div class="metric-label">Escalier + éclairage</div><div class="metric-value" id="ext-r5">0,00 $</div></div>
+          <div class="metric-card green"><div class="metric-label">TOTAL Phase 11</div><div class="metric-value" id="ext-total">0,00 $</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RÉCAPITULATIF GLOBAL -->
+    <div id="mat-recapmat" class="mat-panel" style="display:none;">
+
+      <!-- PARAMÈTRES D'EXÉCUTION -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-title">⚙️ Paramètres d'exécution du projet</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Main-d'œuvre — taux chargé global ($/h)</label>
+            <input type="number" id="rec-mo-taux" value="65" oninput="updateRecap()">
+          </div>
+          <div class="form-group">
+            <label>Heures totales estimées (main-d'œuvre)</label>
+            <input type="number" id="rec-mo-heures" value="0" oninput="updateRecap()">
+          </div>
+          <div class="form-group">
+            <label>Sous-traitants (forfait global $)</label>
+            <input type="number" id="rec-st" value="0" oninput="updateRecap()">
+          </div>
+          <div class="form-group">
+            <label>Équipements / location machinerie ($)</label>
+            <input type="number" id="rec-equip" value="0" oninput="updateRecap()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Frais de chantier / supervision (%)</label>
+            <input type="range" id="rec-frais" min="0" max="20" value="8" oninput="updateRecap(); document.getElementById('rec-frais-val').textContent=this.value+'%'">
+            <div style="text-align:right;font-size:13px;font-weight:600;color:var(--bleu);margin-top:3px;" id="rec-frais-val">8%</div>
+          </div>
+          <div class="form-group">
+            <label>Contingence / imprévus (%)</label>
+            <input type="range" id="rec-conting" min="0" max="20" value="10" oninput="updateRecap(); document.getElementById('rec-conting-val').textContent=this.value+'%'">
+            <div style="text-align:right;font-size:13px;font-weight:600;color:var(--bleu);margin-top:3px;" id="rec-conting-val">10%</div>
+          </div>
+          <div class="form-group">
+            <label>Marge bénéficiaire entrepreneur (%)</label>
+            <input type="range" id="rec-marge" min="5" max="40" value="15" oninput="updateRecap(); document.getElementById('rec-marge-val').textContent=this.value+'%'">
+            <div style="text-align:right;font-size:13px;font-weight:600;color:var(--bleu);margin-top:3px;" id="rec-marge-val">15%</div>
+          </div>
+          <div class="form-group">
+            <label>Taxes applicables</label>
+            <select id="rec-taxes" onchange="updateRecap()">
+              <option value="0.14975">TPS + TVQ (14,975%)</option>
+              <option value="0.05">TPS seulement (5%)</option>
+              <option value="0">Exonéré / Hors taxes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLEAU DÉTAIL PHASES -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-title">📋 Détail des coûts par phase de construction</div>
+        <div class="table-wrap">
+          <table id="recap-table">
+            <thead>
+              <tr>
+                <th style="width:36px;">#</th>
+                <th>Phase</th>
+                <th style="width:130px;">Matériaux</th>
+                <th style="width:130px;">Main-d'œuvre</th>
+                <th style="width:130px;">Total phase</th>
+                <th style="width:60px;">%</th>
+              </tr>
+            </thead>
+            <tbody id="recap-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RÉCAPITULATIF FINANCIER COMPLET -->
+      <div id="recap-financier" style="margin-bottom:20px;"></div>
+
+      <!-- BOUTONS -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimer / Exporter PDF</button>
+        <button class="btn btn-gold" onclick="recalcAll()">🔄 Recalculer tout</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- CONFORMITÉ -->
+  <section id="conformite" class="section">
+    <div class="page-title">Conformité — CNB / CCB / Normes QC</div>
+    <div class="page-sub">Vérification rapide des principales exigences du Code national du bâtiment 2020 (adopté au Québec)</div>
+
+    <div class="alert alert-info">ℹ️ Cet outil est un aide-mémoire. Il ne remplace pas l'analyse complète d'un professionnel (ingénieur, architecte). Sources : CNB 2020, CCB 2020 du Québec, règlements RBQ.</div>
+
+    <div class="card">
+      <div class="card-title">🏗️ Résidentiel — Maisons unifamiliales et jumelées (Partie 9 CNB 2020)</div>
+
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Profondeur hors-gel des fondations <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Minimum 1,5 m sous le niveau du sol fini au Québec central. Régions nordiques : jusqu'à 2,1 m. Semelles sur roc : aucune exigence de profondeur. Art. 9.12.2 CNB 2020.</div>
+        </div>
+      </div>
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Resistance thermique minimale de l'enveloppe (RSI) <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Toit : RSI 9,0 (R-51) | Murs hors sol : RSI 3,85 (R-22) | Murs sous-sol : RSI 2,0 (R-11) | Dalle : RSI 1,76 (R-10) — selon zone climatique QC. Art. 9.36 CNB 2020.</div>
+        </div>
+      </div>
+      <div class="qual-item">
+        <div class="qual-check warn">⚠</div>
+        <div>
+          <div class="qual-title">Charge de neige au toit <span class="badge badge-warning">VÉRIFICATION REQUISE</span></div>
+          <div class="qual-desc">Charge de référence : 1,9 kPa (Longueuil) à 4,6 kPa (Québec) à 5,0+ kPa (régions nordiques). Inclure la dérive des neiges et la charge de glace. CNBC 2020 Annexe C et C2.</div>
+        </div>
+      </div>
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Hauteur libre minimale <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Espaces habitables : min. 2,4 m (8 pi). Sous-sol aménagé : min. 1,95 m. Garage : min. 2,1 m. Escaliers : min. 1,95 m dégagement vertical. Art. 9.5.3 et 9.8.5 CNB 2020.</div>
+        </div>
+      </div>
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Garde-corps et rampes d'escalier <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Garde-corps requis si dénivellation &gt; 600 mm. Hauteur min. 920 mm (résidentiel 1 logement) ou 1 070 mm (autres). Résistance min. 0,73 kN/m horizontal. Art. 9.8.8 CNB 2020.</div>
+        </div>
+      </div>
+      <div class="qual-item">
+        <div class="qual-check warn">⚠</div>
+        <div>
+          <div class="qual-title">Séparation coupe-feu entre logements <span class="badge badge-warning">REQUIS si &gt; 1 logement</span></div>
+          <div class="qual-desc">Assemblage 45 min. pour maisons jumelées, 60 min. pour triplex et plus. Gypse 5/8" type X requis des deux côtés. Les pénétrations doivent être calfeutrées. Art. 9.10.8 CNB 2020.</div>
+        </div>
+      </div>
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Ventilation — VMC obligatoire <span class="badge badge-danger">OBLIGATOIRE depuis 2012</span></div>
+          <div class="qual-desc">Ventilateur récupérateur de chaleur (VRC/VMC) obligatoire dans toutes les nouvelles constructions résidentielles au Québec depuis le 1er janvier 2012. Débit min. 0,35 L/s par m² de superficie. Art. 9.32 CNB 2020.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏢 Commercial / Institutionnel (Parties 3 et 4 CNB 2020)</div>
+      <div class="qual-item">
+        <div class="qual-check">✓</div>
+        <div>
+          <div class="qual-title">Exigences d'accessibilité universelle — Boucle de déambulation <span class="badge badge-danger">OBLIGATOIRE</span></div>
+          <div class="qual-desc">Accès sans obstacles (ASO) obligatoire pour tous les bâtiments publics. Largeur min. 1 500 mm dans les corridors publics, rampe max. 1:12, espaces de manœuvre conformes. Art. 3.8 CNB 2020.</div>
+        </div>
+      </div>
+      <div class="qual-item">
+        <div class="qual-check warn">⚠</div>
+        <div>
+          <div class="qual-title">Résistance au feu de la structure <span class="badge badge-warning">SELON CLASSIFICATION</span></div>
+          <div class="qual-desc">Varie selon l'usage et la hauteur du bâtiment : 0 à 4 heures de résistance au feu pour la structure. Bâtiments de grande hauteur (&gt; 4 étages) : résistance au feu 2h pour la structure portante. Art. 3.2.2 CNB 2020.</div>
+        </div>
+      </div>
+      <div class="qual-item">
+        <div class="qual-check req">!</div>
+        <div>
+          <div class="qual-title">Ingénieur de structure obligatoire <span class="badge badge-danger">REQUIS &gt; 600 m²</span></div>
+          <div class="qual-desc">Pour tout bâtiment non résidentiel de 600 m² et plus, ou plus de 3 étages, les plans de structure doivent être signés et scellés par un ingénieur membre de l'OIQ. Loi sur les ingénieurs, L.R.Q., c. I-9.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculateur de classification -->
+    <div class="card">
+      <div class="card-title">🔍 Déterminer la classification du bâtiment</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Usage principal</label>
+          <select id="class-usage" onchange="classerBatiment()">
+            <option value="">Sélectionner...</option>
+            <option value="A2">Rassemblement — cinéma, salle de spectacle (A2)</option>
+            <option value="B1">Soins — hôpital (B1)</option>
+            <option value="C">Habitation (C)</option>
+            <option value="D">Affaires et services personnels (D)</option>
+            <option value="E">Commerce de détail (E)</option>
+            <option value="F3">Industrie légère (F3)</option>
+            <option value="F2">Industrie moyenne (F2)</option>
+            <option value="F1">Industrie lourde (F1)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nombre d'étages</label>
+          <input type="number" id="class-etages" value="1" min="1" oninput="classerBatiment()">
+        </div>
+        <div class="form-group">
+          <label>Superficie totale (m²)</label>
+          <input type="number" id="class-sup" value="0" oninput="classerBatiment()">
+        </div>
+      </div>
+      <div id="class-resultat" style="margin-top:16px;"></div>
+    </div>
+  </section>
+
+  <!-- TAXES & MARGES -->
+  <section id="taxes" class="section">
+    <div class="page-title">Calculateur Taxes & Marges</div>
+    <div class="page-sub">TPS, TVQ, marges bénéficiaires et ratios de coûts de construction au Québec</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">💰</span> Calculateur TPS/TVQ</div>
+        <div class="form-group">
+          <label>Montant de base ($)</label>
+          <input type="number" id="tax-montant" value="0" oninput="calculerTaxes()">
+        </div>
+        <div class="form-group">
+          <label>Type de calcul</label>
+          <select id="tax-sens" onchange="calculerTaxes()">
+            <option value="ajout">Ajouter les taxes au montant</option>
+            <option value="retrait">Extraire les taxes du montant (TTC)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Taxes applicables</label>
+          <select id="tax-type" onchange="calculerTaxes()">
+            <option value="both">TPS + TVQ (14,975%)</option>
+            <option value="tps">TPS seulement (5%)</option>
+            <option value="tvq">TVQ seulement (9,975%)</option>
+          </select>
+        </div>
+        <hr class="divider">
+        <div id="tax-result">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;"><span>Montant avant taxes</span><span id="t-avant">0,00 $</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;"><span>TPS (5%)</span><span id="t-tps">0,00 $</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;"><span>TVQ (9,975%)</span><span id="t-tvq">0,00 $</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px;font-weight:700;border-top:2px solid #eaecf0;"><span>Total TTC</span><span id="t-total-tax" style="color:var(--bleu);">0,00 $</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">📈</span> Calculateur de marge bénéficiaire</div>
+        <div class="form-group">
+          <label>Coût de revient total ($)</label>
+          <input type="number" id="m-cout" value="0" oninput="calculerMarge()">
+        </div>
+        <div class="form-group">
+          <label>Prix de vente ($)</label>
+          <input type="number" id="m-vente" value="0" oninput="calculerMarge()">
+        </div>
+        <hr class="divider">
+        <div class="grid-2">
+          <div class="metric-card">
+            <div class="metric-label">Profit brut</div>
+            <div class="metric-value" id="m-profit" style="font-size:20px;">0,00 $</div>
+          </div>
+          <div class="metric-card gold">
+            <div class="metric-label">Marge brute</div>
+            <div class="metric-value" id="m-marge-pct" style="font-size:20px;">0%</div>
+          </div>
+          <div class="metric-card green">
+            <div class="metric-label">Markup</div>
+            <div class="metric-value" id="m-markup" style="font-size:20px;">0%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Facteur multiplicateur</div>
+            <div class="metric-value" id="m-facteur" style="font-size:20px;">0x</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">📊</span> Ratios de coûts de construction — Québec 2024</div>
+      <div class="alert alert-warning">⚠️ Ces ratios sont des estimations moyennes pour la région de Montréal/Québec. Ils varient selon la région, la qualité des finitions et les conditions de marché.</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Type de bâtiment</th>
+              <th>Coût min ($/pi²)</th>
+              <th>Coût moyen ($/pi²)</th>
+              <th>Coût max ($/pi²)</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Maison unifamiliale — standard</td><td>200 $</td><td>260 $</td><td>340 $</td><td><span class="badge badge-info">Résidentiel</span></td></tr>
+            <tr><td>Maison unifamiliale — haut de gamme</td><td>320 $</td><td>420 $</td><td>600 $+</td><td><span class="badge badge-info">Résidentiel</span></td></tr>
+            <tr><td>Immeuble à condos (5+ étages)</td><td>280 $</td><td>350 $</td><td>480 $</td><td><span class="badge badge-info">Résidentiel</span></td></tr>
+            <tr><td>Bureau commercial — standard</td><td>180 $</td><td>240 $</td><td>320 $</td><td><span class="badge badge-warning">Commercial</span></td></tr>
+            <tr><td>Commerce de détail — aménagement</td><td>120 $</td><td>180 $</td><td>280 $</td><td><span class="badge badge-warning">Commercial</span></td></tr>
+            <tr><td>Entrepôt / industriel léger</td><td>100 $</td><td>145 $</td><td>200 $</td><td><span class="badge badge-gray">Industriel</span></td></tr>
+            <tr><td>Rénovation résidentielle — cuisine</td><td>250 $</td><td>400 $</td><td>700 $+</td><td><span class="badge badge-success">Rénovation</span></td></tr>
+            <tr><td>Rénovation — salle de bain</td><td>300 $</td><td>500 $</td><td>900 $+</td><td><span class="badge badge-success">Rénovation</span></td></tr>
+            <tr><td>Garage résidentiel détaché</td><td>120 $</td><td>175 $</td><td>240 $</td><td><span class="badge badge-info">Résidentiel</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:16px;font-size:12px;color:#888;">Sources : APCHQ, Altus Group Market Monitor 2024, données de marché QC. Prix en dollars canadiens, hors taxes.</div>
+    </div>
+  </section>
+
+
+  <!-- EXÉCUTION / GANTT -->
+  <section id="execution" class="section">
+    <div class="page-title">Suivi d'exécution & Comparatif budgétaire</div>
+    <div class="page-sub">Module indépendant — Comparez le prix soumis vs le coût réel d'exécution par phase</div>
+
+    <div class="alert alert-info" style="margin-bottom:20px;">
+      ℹ️ Ce module est <strong>entièrement indépendant</strong> de la soumission. Saisissez directement les montants soumis et réels pour chaque phase. Aucune donnée n'est importée automatiquement.
+    </div>
+
+    <!-- PARAMÈTRES GANTT -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">⚙️ Paramètres du chantier</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date de début du chantier</label>
+          <input type="date" id="gantt-debut" oninput="renderGantt()">
+        </div>
+        <div class="form-group">
+          <label>Nom du projet / chantier</label>
+          <input type="text" id="exec-nom-projet" maxlength="80" placeholder="Ex : Résidence Tremblay — Terrebonne" oninput="renderComparatif()">
+        </div>
+        <div class="form-group">
+          <label>Jours travaillés / semaine</label>
+          <select id="gantt-jours-sem" onchange="renderGantt()">
+            <option value="5" selected>5 jours (lun–ven)</option>
+            <option value="6">6 jours (lun–sam)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Unité d'affichage Gantt</label>
+          <select id="gantt-unite" onchange="renderGantt()">
+            <option value="semaine" selected>Semaines</option>
+            <option value="mois">Mois</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ TABLEAU COMPARATIF BUDGÉTAIRE ============ -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">💰 Tableau comparatif — Prix soumis vs Coût réel d'exécution
+        <button class="btn btn-gold btn-sm" onclick="ajouterPhaseExec()" style="margin-left:auto;">+ Phase</button>
+        <button class="btn btn-outline btn-sm" onclick="resetPhasesExec()" style="margin-left:8px;">↺ Réinitialiser</button>
+      </div>
+
+      <div class="table-wrap">
+        <table style="font-size:13px;">
+          <thead>
+            <tr>
+              <th style="width:30px;">#</th>
+              <th style="min-width:160px;">Phase / Description</th>
+              <th style="width:120px;">Prix soumis ($)</th>
+              <th style="width:120px;">Coût réel ($)</th>
+              <th style="width:100px;">Écart ($)</th>
+              <th style="width:85px;">Écart (%)</th>
+              <th style="width:100px;">Statut phase</th>
+              <th style="width:40px;"></th>
+            </tr>
+          </thead>
+          <tbody id="exec-tbody"></tbody>
+          <tfoot id="exec-tfoot"></tfoot>
+        </table>
+      </div>
+
+      <!-- RÉSUMÉ COMPARATIF -->
+      <div id="exec-resume" style="margin-top:16px;"></div>
+    </div>
+
+    <!-- ============ LÉGENDE STATUTS GANTT ============ -->
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;font-size:13px;align-items:center;">
+      <span style="font-weight:600;color:#555;">Statut Gantt :</span>
+      <span><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#c8d8f0;margin-right:5px;vertical-align:middle;"></span>À faire</span>
+      <span><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#f0c040;margin-right:5px;vertical-align:middle;"></span>En cours</span>
+      <span><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#2ECC71;margin-right:5px;vertical-align:middle;"></span>Terminé</span>
+      <span><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#e74c3c;margin-right:5px;vertical-align:middle;"></span>Retard</span>
+      <span><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#bbb;margin-right:5px;vertical-align:middle;"></span>En attente</span>
+    </div>
+
+    <!-- ============ TABLEAU DES TÂCHES GANTT ============ -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">📝 Tâches & Calendrier d'exécution
+        <button class="btn btn-gold btn-sm" onclick="ajouterTache()" style="margin-left:auto;">+ Tâche</button>
+        <button class="btn btn-outline btn-sm" onclick="resetTaches()" style="margin-left:8px;">↺ Réinitialiser</button>
+      </div>
+      <div class="table-wrap">
+        <table style="font-size:13px;">
+          <thead>
+            <tr>
+              <th style="width:35px;">Ph.</th>
+              <th style="min-width:180px;">Tâche</th>
+              <th style="width:80px;">Début (j)</th>
+              <th style="width:75px;">Durée (j)</th>
+              <th style="width:110px;">Responsable</th>
+              <th style="width:110px;">Statut</th>
+              <th style="width:85px;">Avancement</th>
+              <th style="width:40px;"></th>
+            </tr>
+          </thead>
+          <tbody id="taches-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ DIAGRAMME DE GANTT ============ -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">📅 Diagramme de Gantt interactif</div>
+      <div id="gantt-container" style="overflow-x:auto;overflow-y:visible;min-height:200px;">
+        <div id="gantt-inner"></div>
+      </div>
+      <div id="gantt-summary" style="margin-top:16px;"></div>
+    </div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimer rapport complet</button>
+    </div>
+  </section>
+
+
+</main>
+
+<footer>
+  <span>KZO</span> EntrepreneurPro QC — Outil de gestion pour entrepreneurs · Québec 2024 · Données à titre indicatif · Consultez toujours un professionnel
+</footer>
+
+<script>
+// ===================== SÉCURITÉ — XSS Protection =====================
+
+// Afficher / masquer mot de passe
+function toggleVoir(inputId, btnId){
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if(!inp || !btn) return;
+  const visible = inp.type === 'password';
+  inp.type = visible ? 'text' : 'password';
+  btn.dataset.visible = visible ? '1' : '0';
+  btn.innerHTML = visible ? '&#128584;' : '&#128065;';
+  btn.style.color = visible ? '#0D3B6E' : '#aaa';
+  btn.title = visible ? 'Masquer le mot de passe' : 'Afficher le mot de passe';
+  if(visible) inp.focus();
+}
+
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;');
+}
+
+// ===================== NAVIGATION =====================
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const map = {'tableau-bord':0,'qualifications':1,'soumission':2,'main-oeuvre':3,'materiaux':4,'conformite':5,'taxes':6,'execution':7};
+  if(tabs[map[id]]) tabs[map[id]].classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ===================== SOUMISSION =====================
+let lignes = [];
+let ligneId = 0;
+
+function ajouterLigne(desc='',qty=1,unit='un',prix=0) {
+  const id = ++ligneId;
+  lignes.push({id, desc, qty, unit, prix});
+  renderLignes();
+}
+
+function renderLignes() {
+  const c = document.getElementById('lignes-container');
+  c.innerHTML = '';
+  lignes.forEach(l => {
+    const row = document.createElement('div');
+    row.className = 'line-item';
+    row.innerHTML = `
+      <input type="text" value="${esc(l.desc)}" placeholder="Description des travaux" oninput="updateLigne(${l.id},'desc',this.value)">
+      <input type="number" value="${l.qty}" min="0" style="width:70px;" oninput="updateLigne(${l.id},'qty',this.value)">
+      <select style="width:80px;padding:6px;" onchange="updateLigne(${l.id},'unit',this.value)">
+        ${['un','h','m','m²','m³','pi²','pi³','forfait'].map(u=>`<option ${l.unit===u?'selected':''}>${u}</option>`).join('')}
+      </select>
+      <input type="number" value="${l.prix}" min="0" step="0.01" style="width:100px;" oninput="updateLigne(${l.id},'prix',this.value)">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <strong style="min-width:80px;font-size:13px;">${fmt(l.qty * l.prix)}</strong>
+        <button class="line-delete" onclick="supprimerLigne(${l.id})">✕</button>
+      </div>
+    `;
+    c.appendChild(row);
+  });
+  updateSoumission();
+}
+
+function updateLigne(id, field, val) {
+  id = parseInt(id);
+  if (isNaN(id)) return;
+  const allowedFields = ['desc','qty','unit','prix'];
+  if (!allowedFields.includes(field)) return;
+  const l = lignes.find(x => x.id === id);
+  if (!l) return;
+  if (field === 'qty' || field === 'prix') {
+    const n = parseFloat(val);
+    l[field] = isNaN(n) ? 0 : Math.max(0, n);
+  } else if (field === 'desc') {
+    l[field] = String(val).slice(0, 200);
+  } else {
+    const allowed = ['un','h','m','m²','m³','pi²','pi³','forfait'];
+    if (allowed.includes(val)) l[field] = val;
+  }
+  renderLignes();
+}
+
+function supprimerLigne(id) {
+  id = parseInt(id);
+  if (isNaN(id)) return;
+  lignes = lignes.filter(l => l.id !== id);
+  renderLignes();
+}
+
+function updateSoumission() {
+  const coutDirect = lignes.reduce((s,l) => s + l.qty * l.prix, 0);
+  const margeP = (parseInt(document.getElementById('s-marge').value)||15)/100;
+  const fraisP = (parseInt(document.getElementById('s-frais').value)||8)/100;
+  const contingP = (parseInt(document.getElementById('s-conting').value)||5)/100;
+  const taxeType = document.getElementById('s-taxes').value;
+  const sup = parseFloat(document.getElementById('s-superficie').value)||0;
+
+  const fraisGen = coutDirect * fraisP;
+  const subtotal1 = coutDirect + fraisGen;
+  const conting = subtotal1 * contingP;
+  const subtotal2 = subtotal1 + conting;
+  const marge = subtotal2 * margeP;
+  const sousTotal = subtotal2 + marge;
+  const taxRate = taxeType === 'both' ? 0.14975 : taxeType === 'tps' ? 0.05 : 0;
+  const taxes = sousTotal * taxRate;
+  const total = sousTotal + taxes;
+  const prixPi2 = sup > 0 ? sousTotal / (sup * 0.0929) : 0;
+
+  document.getElementById('r-cout-direct').textContent = fmt(coutDirect);
+  document.getElementById('r-frais-gen').textContent = fmt(fraisGen);
+  document.getElementById('r-conting').textContent = fmt(conting);
+  document.getElementById('r-marge').textContent = fmt(marge);
+  document.getElementById('r-sous-total').textContent = fmt(sousTotal);
+  document.getElementById('r-taxes').textContent = fmt(taxes);
+  document.getElementById('r-total').textContent = fmt(total);
+  document.getElementById('r-prix-pi2').textContent = sup > 0 ? fmt(prixPi2)+'/m²' : '—';
+  document.getElementById('db-valeur').textContent = fmt(total);
+  document.getElementById('db-soumissions').textContent = lignes.length > 0 ? 1 : 0;
+  document.getElementById('db-marge').textContent = sousTotal > 0 ? Math.round(margeP*100)+'%' : '0%';
+}
+
+function imprimerSoumission() { window.print(); }
+function reinitialiserSoumission() { lignes=[]; ligneId=0; renderLignes(); }
+
+// ===================== MAIN D'OEUVRE =====================
+function calculerMO() {
+  const select = document.getElementById('mo-metier');
+  const taux = parseFloat(select.options[select.selectedIndex].dataset.taux)||0;
+  const nb = parseInt(document.getElementById('mo-nb').value)||0;
+  const h = parseFloat(document.getElementById('mo-heures').value)||0;
+  const typeH = parseFloat(document.getElementById('mo-type-h').value)||1;
+  const secteur = document.getElementById('mo-secteur').value;
+
+  // Taux d'avantages sociaux selon secteur CCQ 2024
+  const charges = {
+    res: {vacances:0.108, formation:0.015, reer:0.030, assur:0.021, cnesst:0.060},
+    gc: {vacances:0.108, formation:0.016, reer:0.040, assur:0.025, cnesst:0.075},
+    ic: {vacances:0.108, formation:0.017, reer:0.050, assur:0.028, cnesst:0.080},
+    ind: {vacances:0.108, formation:0.018, reer:0.055, assur:0.030, cnesst:0.085}
+  };
+  const c = charges[secteur];
+  const hTotal = nb * h * typeH;
+  const salaireBrut = hTotal * taux;
+  const totalP = c.vacances + c.formation + c.reer + c.assur + c.cnesst;
+  const chargesTotal = salaireBrut * totalP;
+  const coutTotal = salaireBrut + chargesTotal;
+  const coutHoraire = hTotal > 0 ? coutTotal / (nb * h) : 0;
+
+  const rows = [
+    ['Vacances et congés fériés (10,8%)', c.vacances, salaireBrut * c.vacances],
+    ['Fonds de formation (CCQ)', c.formation, salaireBrut * c.formation],
+    ['REER collectif', c.reer, salaireBrut * c.reer],
+    ['Assurance collective', c.assur, salaireBrut * c.assur],
+    ['CNESST', c.cnesst, salaireBrut * c.cnesst],
+  ];
+  document.getElementById('mo-charges-body').innerHTML = rows.map(r =>
+    `<tr><td>${r[0]}</td><td>${Math.round(r[1]*100)}%</td><td>${fmt(r[2])}</td></tr>`
+  ).join('') + `<tr style="font-weight:700;background:#f5f6fa;"><td>Total charges</td><td>${Math.round(totalP*100)}%</td><td>${fmt(chargesTotal)}</td></tr>`;
+
+  document.getElementById('mo-salaire-brut').textContent = fmt(salaireBrut);
+  document.getElementById('mo-charges-total').textContent = fmt(chargesTotal);
+  document.getElementById('mo-cout-horaire').textContent = fmt(coutHoraire)+'/h';
+  document.getElementById('mo-cout-total').textContent = fmt(coutTotal);
+}
+
+// ===================== MATERIAUX =====================
+function showMat(type) {
+  document.querySelectorAll('.mat-panel').forEach(p => p.style.display = 'none');
+  const el = document.getElementById('mat-'+type);
+  if(el) el.style.display = 'block';
+  document.querySelectorAll('.mat-btn').forEach(b => {
+    b.className = b.className.replace('btn-primary','btn-outline').replace('btn-gold','btn-outline');
+  });
+  if(event && event.target) event.target.className = event.target.className.replace('btn-outline','btn-primary');
+  if(type === 'recapmat') updateRecap();
+}
+
+
+// ===================== MATERIAUX 11 PHASES =====================
+function g(id){
+  const el=document.getElementById(id);
+  if(!el) return 0;
+  const v=parseFloat(el.value);
+  if(isNaN(v)||v<0) return 0;
+  if(v>9999999) return 9999999;
+  return v;
+}
+function gs(id){
+  const el=document.getElementById(id);
+  return el ? el.value : '0';
+}
+function sv(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+
+function calcDB(){
+  const r1=g('db-surf')*(parseFloat(gs('db-veg'))||0)*g('db-prix-m2');
+  const r2=g('db-arbres')*g('db-prix-arbre');
+  const r3=g('db-arbres')*(parseFloat(gs('db-souches'))||0)+(parseFloat(gs('db-transport'))||0);
+  const tot=r1+r2+r3;
+  sv('db-r1',fmt(r1));sv('db-r2',fmt(r2));sv('db-r3',fmt(r3));sv('db-total',fmt(tot));
+  return tot;
+}
+function calcImpl(){
+  const r1=g('impl-arp');
+  const r2=g('impl-piquets')*g('impl-prix-piquet')+g('impl-materiel');
+  const r3=(parseFloat(gs('impl-cert'))||0);
+  const tot=r1+r2+r3;
+  sv('impl-r1',fmt(r1));sv('impl-r2',fmt(r2));sv('impl-r3',fmt(r3));sv('impl-total',fmt(tot));
+  return tot;
+}
+function calcExc(){
+  const volNet=g('exc-long')*g('exc-larg')*g('exc-prof');
+  const foisonnement=(parseFloat(gs('exc-sol'))||0);
+  const volFois=volNet*foisonnement;
+  const exc=volNet*g('exc-prix');
+  const gran=g('exc-granulat')*g('exc-prix-gran');
+  const drain=g('exc-drain')*g('exc-prix-drain');
+  const remblPrix=(parseFloat(gs('exc-rembl'))||0);
+  const rembl=remblPrix>0?volNet*0.3*remblPrix:0;
+  const r2=gran+drain+rembl;
+  const tot=exc+r2;
+  sv('exc-vol-net',volNet.toFixed(2));
+  sv('exc-vol-foisonne',volFois.toFixed(2)+' m³');
+  sv('exc-r2',fmt(r2));sv('exc-total',fmt(tot));
+  return tot;
+}
+function calcFon(){
+  const px=g('fon-prix-beton');
+  const volSem=g('fon-sem-perim')*g('fon-sem-larg')*g('fon-sem-ep');
+  const volMur=g('fon-mur-perim')*g('fon-mur-haut')*g('fon-mur-ep');
+  const volDalle=g('fon-dalle-sup')*g('fon-dalle-ep')/1000;
+  const volTot=(volSem+volMur+volDalle)*1.1;
+  const camions=Math.ceil(volTot/8);
+  const surfCoffrage=(g('fon-mur-perim')*g('fon-mur-haut')*2)+(g('fon-sem-perim')*g('fon-sem-larg')*2);
+  const r1=volTot*px+surfCoffrage*g('fon-coffrage');
+  const r2=volTot*g('fon-acier-ratio')*g('fon-prix-acier');
+  const r3=g('fon-mur-perim')*g('fon-mur-haut')*(parseFloat(gs('fon-membrane'))||0);
+  const tot=r1+r2+r3;
+  sv('fon-vol',volTot.toFixed(2));sv('fon-camions',camions);
+  sv('fon-r1',fmt(r1));sv('fon-r2',fmt(r2));sv('fon-r3',fmt(r3));sv('fon-total',fmt(tot));
+  return tot;
+}
+function calcStr(){
+  const sup=g('str-sup'),perim=g('str-perim'),haut=g('str-haut'),etages=g('str-etages');
+  const esp=(parseFloat(gs('str-esp'))||0)/1000;
+  const nbSolives=Math.ceil(Math.sqrt(sup)/esp)+1;
+  const nbMontants=Math.ceil(perim*etages/esp)+4;
+  const plLineaires=(nbSolives+nbMontants)*(haut+Math.sqrt(sup)*0.5);
+  const feuillesCP=Math.ceil((sup*etages+perim*haut*etages*0.5)*1.1/2.98);
+  const r1=plLineaires*g('str-prix-bo')+feuillesCP*g('str-prix-cp');
+  const r2=r1*(g('str-quincail')/100)+g('str-lvl')+g('str-acier');
+  const tot=r1+r2;
+  sv('str-pl',Math.round(plLineaires));sv('str-feuilles',feuillesCP);
+  sv('str-r1',fmt(r1));sv('str-r2',fmt(r2));sv('str-total',fmt(tot));
+  return tot;
+}
+function calcToit(){
+  const sup=g('toit-sup'),debord=g('toit-debord');
+  const pente=parseFloat(gs('p-pente'))||1.083;
+  const surfReelle=(sup+debord*Math.sqrt(sup)*2)*pente;
+  const surfCmd=surfReelle*1.10;
+  const r1=surfCmd*g('toit-prix');
+  const r2=surfReelle*(parseFloat(gs('toit-membrane'))||0)+(parseFloat(gs('toit-vent'))||0)+g('toit-solins')*g('toit-prix-solins');
+  const tot=r1+r2;
+  sv('toit-surf-reelle',surfReelle.toFixed(2));
+  sv('toit-surf-cmd',surfCmd.toFixed(2)+' m²');
+  sv('toit-r1',fmt(r1));sv('toit-r2',fmt(r2));sv('toit-total',fmt(tot));
+  return tot;
+}
+function calcEnv(){
+  const surfMur=g('env-surf-mur'),surfToit=g('env-surf-toit');
+  const r1=surfMur*(parseFloat(gs('env-iso-mur'))||0)+surfToit*(parseFloat(gs('env-iso-toit'))||0);
+  const r2=(surfMur+surfToit)*g('env-parevap');
+  const r3=surfMur*(parseFloat(gs('env-rev-ext'))||0);
+  const r4=g('env-nb-fen')*g('env-prix-fen')+g('env-nb-porte')*g('env-prix-porte');
+  const tot=r1+r2+r3+r4;
+  sv('env-r1',fmt(r1));sv('env-r2',fmt(r2));sv('env-r3',fmt(r3));sv('env-r4',fmt(r4));sv('env-total',fmt(tot));
+  return tot;
+}
+function calcElec(){
+  const r1=(parseFloat(gs('elec-panel'))||0)+(parseFloat(gs('elec-entree'))||0)+g('elec-tableau-sec');
+  const r2=g('elec-sup')*(parseFloat(gs('elec-cable-type'))||0);
+  const r3=g('elec-prises120')*g('elec-prix-prise120')+g('elec-prises240')*g('elec-prix-prise240');
+  const r4=g('elec-interrupteurs')*g('elec-prix-inter')+g('elec-detecteurs')*65;
+  const r5=g('elec-luminaires')*g('elec-prix-luminaire');
+  const r6=g('elec-borne-ve')*g('elec-prix-borne');
+  const tot=r1+r2+r3+r4+r5+r6;
+  sv('elec-r1',fmt(r1));sv('elec-r2',fmt(r2));sv('elec-r3',fmt(r3));
+  sv('elec-r4',fmt(r4));sv('elec-r5',fmt(r5));sv('elec-r6',fmt(r6));sv('elec-total',fmt(tot));
+  return tot;
+}
+function calcPlo(){
+  const r1=g('plo-long-alim')*(parseFloat(gs('plo-tuyau-alim'))||0);
+  const r2=g('plo-long-drain')*(parseFloat(gs('plo-tuyau-drain'))||0);
+  const r3=g('plo-sdb-compl')*g('plo-prix-sdb');
+  const r4=g('plo-sdb-demi')*g('plo-prix-demi-sdb')+g('plo-douche')*g('plo-prix-douche');
+  const r5=(parseFloat(gs('plo-evier'))||0)+g('plo-lv');
+  const r6=(parseFloat(gs('plo-ceau'))||0);
+  const r7=g('plo-rob-ext')*180+g('plo-drain-pl')*350+(parseFloat(gs('plo-puisard'))||0)+(parseFloat(gs('plo-filtre'))||0);
+  const tot=r1+r2+r3+r4+r5+r6+r7;
+  sv('plo-r1',fmt(r1));sv('plo-r2',fmt(r2));sv('plo-r3',fmt(r3));sv('plo-r4',fmt(r4));
+  sv('plo-r5',fmt(r5));sv('plo-r6',fmt(r6));sv('plo-r7',fmt(r7));sv('plo-total',fmt(tot));
+  return tot;
+}
+function calcCVC(){
+  const r1=(parseFloat(gs('cvc-chauf'))||0);
+  const r2=g('cvc-minisplit')*g('cvc-prix-ms');
+  const r3=g('cvc-gaine')*g('cvc-prix-gaine');
+  const r4=(parseFloat(gs('cvc-vrc'))||0);
+  const r5=g('cvc-hotte')+g('cvc-sechage')+g('cvc-vent-sdb')*g('cvc-prix-vent');
+  const tot=r1+r2+r3+r4+r5;
+  sv('cvc-r1',fmt(r1));sv('cvc-r2',fmt(r2));sv('cvc-r3',fmt(r3));
+  sv('cvc-r4',fmt(r4));sv('cvc-r5',fmt(r5));sv('cvc-total',fmt(tot));
+  return tot;
+}
+function calcMec(){ return calcElec()+calcPlo()+calcCVC(); }
+function calcClo(){
+  const perim=g('clo-perim'),haut=g('clo-haut'),plafond=g('clo-plafond'),ouv=g('clo-ouv');
+  const surfMur=perim*haut-ouv;
+  const surfPan=1.22*2.44;
+  const panMur=Math.ceil(surfMur/surfPan*1.10);
+  const panPlaf=Math.ceil(plafond/surfPan*1.10);
+  const r1=panMur*(parseFloat(gs('clo-ep-mur'))||0)+panPlaf*(parseFloat(gs('clo-ep-plaf'))||0)+(surfMur+plafond)*(g('clo-montants')+g('clo-joints'));
+  const r2=g('clo-nb-porte')*g('clo-prix-porte');
+  const tot=r1+r2;
+  sv('clo-pan-mur',panMur);sv('clo-pan-plaf',panPlaf);
+  sv('clo-r1',fmt(r1));sv('clo-r2',fmt(r2));sv('clo-total',fmt(tot));
+  return tot;
+}
+function calcFin(){
+  const r1=g('fin-surf-peinture')*(parseFloat(gs('fin-peinture-type'))||0);
+  const r2=g('fin-carrelage')*g('fin-prix-carrelage');
+  const r3=g('fin-flottant')*g('fin-prix-flottant');
+  const r4=g('fin-bois-franc')*g('fin-prix-bois-franc');
+  const r5=g('fin-tapis')*g('fin-prix-tapis');
+  const r6=g('fin-arm-ml')*g('fin-arm-prix')+g('fin-cpt-ml')*(parseFloat(gs('fin-cpt-type'))||0);
+  const r7=g('fin-moul')*g('fin-prix-moul');
+  const tot=r1+r2+r3+r4+r5+r6+r7;
+  sv('fin-r1',fmt(r1));sv('fin-r2',fmt(r2));sv('fin-r3',fmt(r3));sv('fin-r4',fmt(r4));
+  sv('fin-r5',fmt(r5));sv('fin-r6',fmt(r6));sv('fin-r7',fmt(r7));sv('fin-total',fmt(tot));
+  return tot;
+}
+function calcExt(){
+  const r1=g('ext-entree')*(parseFloat(gs('ext-type-entree'))||0);
+  const r2=g('ext-terrasse')*(parseFloat(gs('ext-type-ter'))||0);
+  const r3=g('ext-cloture')*(parseFloat(gs('ext-type-cloture'))||0);
+  const r4=g('ext-gazon')*(parseFloat(gs('ext-type-gazon'))||0)+g('ext-arbres')*g('ext-prix-arbre');
+  const r5=g('ext-escalier')+g('ext-eclairage');
+  const tot=r1+r2+r3+r4+r5;
+  sv('ext-r1',fmt(r1));sv('ext-r2',fmt(r2));sv('ext-r3',fmt(r3));
+  sv('ext-r4',fmt(r4));sv('ext-r5',fmt(r5));sv('ext-total',fmt(tot));
+  return tot;
+}
+function recalcAll(){
+  calcDB();calcImpl();calcExc();calcFon();calcStr();
+  calcToit();calcEnv();calcElec();calcPlo();calcCVC();calcClo();calcFin();calcExt();
+  updateRecap();
+}
+function updateRecap(){
+  const phases=[
+    {num:'1', nom:'Débroussaillage & Préparation',   mat:calcDB(),   moRatio:0.40},
+    {num:'2', nom:'Implantation & Piquetage',         mat:calcImpl(), moRatio:0.60},
+    {num:'3', nom:'Fouille & Excavation',             mat:calcExc(),  moRatio:0.50},
+    {num:'4', nom:'Fondations & Béton',               mat:calcFon(),  moRatio:0.45},
+    {num:'5', nom:'Structure bois',                   mat:calcStr(),  moRatio:0.55},
+    {num:'6', nom:'Toiture',                          mat:calcToit(), moRatio:0.50},
+    {num:'7', nom:'Enveloppe (isolation, rev., fen.)',mat:calcEnv(),  moRatio:0.40},
+    {num:'8', nom:'Électricité',                      mat:calcElec(), moRatio:0.65},
+    {num:'9', nom:'Plomberie',                        mat:calcPlo(),  moRatio:0.60},
+    {num:'10',nom:'Chauffage / Climatisation / VRC',  mat:calcCVC(),  moRatio:0.45},
+    {num:'11',nom:'Cloisons intérieures & Gypse',     mat:calcClo(),  moRatio:0.55},
+    {num:'12',nom:'Finitions intérieures',            mat:calcFin(),  moRatio:0.50},
+    {num:'13',nom:'Aménagement extérieur',            mat:calcExt(),  moRatio:0.45},
+  ];
+
+  // Paramètres exécution
+  const moTaux  = g('rec-mo-taux')||65;
+  const moH     = g('rec-mo-heures');
+  const stForfait = g('rec-st');
+  const equip   = g('rec-equip');
+  const fraisP  = (parseInt(document.getElementById('rec-frais').value)||8)/100;
+  const contingP= (parseInt(document.getElementById('rec-conting').value)||10)/100;
+  const margeP  = (parseInt(document.getElementById('rec-marge').value)||15)/100;
+  const taxRate = (parseFloat(document.getElementById('rec-taxes').value)||0);
+
+  const totalMat = phases.reduce((s,p)=>s+p.mat,0);
+
+  // Main-d'œuvre : soit heures saisies, soit estimation par ratio sur matériaux
+  const moCoutSaisi = moH > 0 ? moH * moTaux : 0;
+  const moEstime    = moH > 0 ? 0 : totalMat * 0.55; // ratio moyen 55% si non saisi
+
+  // MO par phase (pour le tableau)
+  phases.forEach(p => {
+    p.mo = moH > 0
+      ? (p.mat / (totalMat||1)) * moCoutSaisi
+      : p.mat * p.moRatio;
+    p.total = p.mat + p.mo;
+  });
+
+  const totalMO   = phases.reduce((s,p)=>s+p.mo,0);
+  const totalDirect = totalMat + totalMO + stForfait + equip;
+  const frais     = totalDirect * fraisP;
+  const sousTotal1= totalDirect + frais;
+  const conting   = sousTotal1 * contingP;
+  const sousTotal2= sousTotal1 + conting;
+  const marge     = sousTotal2 * margeP;
+  const avantTaxes= sousTotal2 + marge;
+  const tps       = taxRate >= 0.14 ? avantTaxes * 0.05     : (taxRate===0.05 ? avantTaxes*0.05 : 0);
+  const tvq       = taxRate >= 0.14 ? avantTaxes * 0.09975  : 0;
+  const taxes     = tps + tvq;
+  const grandTotal= avantTaxes + taxes;
+  const totalPhases = phases.reduce((s,p)=>s+p.total,0);
+
+  // --- TABLEAU PHASES ---
+  const tbody = document.getElementById('recap-tbody');
+  if(tbody){
+    tbody.innerHTML = phases.map(p => {
+      const pct = totalPhases > 0 ? Math.round(p.total/totalPhases*100) : 0;
+      return `<tr>
+        <td><strong style="color:var(--bleu);">${p.num}</strong></td>
+        <td>${p.nom}</td>
+        <td style="color:#555;">${fmt(p.mat)}</td>
+        <td style="color:#555;">${fmt(p.mo)}</td>
+        <td><strong>${fmt(p.total)}</strong></td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="flex:1;background:#eaecf0;border-radius:4px;height:7px;min-width:40px;">
+              <div style="width:${pct}%;height:7px;background:var(--bleu);border-radius:4px;"></div>
+            </div>
+            <span style="font-size:11px;color:#999;min-width:28px;">${pct}%</span>
+          </div>
+        </td>
+      </tr>`;
+    }).join('') + `
+      <tr style="background:#f5f6fa;font-weight:700;border-top:2px solid #dde1e9;">
+        <td colspan="2">SOUS-TOTAL PHASES</td>
+        <td>${fmt(totalMat)}</td>
+        <td>${fmt(totalMO)}</td>
+        <td>${fmt(totalPhases)}</td>
+        <td></td>
+      </tr>`;
+  }
+
+  // --- RÉCAPITULATIF FINANCIER ---
+  const fin = document.getElementById('recap-financier');
+  if(fin){
+    const moNote = moH > 0
+      ? `${moH} h × ${moTaux} $/h`
+      : `Estimation automatique (55% des matériaux)`;
+    const taxLabel = taxRate >= 0.14 ? 'TPS + TVQ (14,975%)' : taxRate === 0.05 ? 'TPS seulement (5%)' : 'Exonéré';
+
+    fin.innerHTML = `
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">💰 Récapitulatif financier complet — Coût d'exécution</div>
+      <div class="table-wrap">
+        <table style="font-size:14px;">
+          <thead><tr><th>Poste</th><th style="text-align:right;width:160px;">Montant</th></tr></thead>
+          <tbody>
+            <tr style="background:#f8f9fc;">
+              <td colspan="2" style="font-weight:700;color:var(--bleu);padding:10px 14px 4px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Coûts directs</td>
+            </tr>
+            <tr><td>Matériaux — 13 phases</td><td style="text-align:right;font-weight:600;">${fmt(totalMat)}</td></tr>
+            <tr><td>Main-d'œuvre (${moNote})</td><td style="text-align:right;font-weight:600;">${fmt(totalMO)}</td></tr>
+            ${stForfait>0?`<tr><td>Sous-traitants (forfait)</td><td style="text-align:right;font-weight:600;">${fmt(stForfait)}</td></tr>`:''}
+            ${equip>0?`<tr><td>Équipements / machinerie</td><td style="text-align:right;font-weight:600;">${fmt(equip)}</td></tr>`:''}
+            <tr style="background:#f0f4fb;"><td style="font-weight:700;">Sous-total coûts directs</td><td style="text-align:right;font-weight:700;">${fmt(totalDirect)}</td></tr>
+
+            <tr style="background:#f8f9fc;">
+              <td colspan="2" style="font-weight:700;color:var(--bleu);padding:10px 14px 4px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Frais & Ajustements</td>
+            </tr>
+            <tr><td>Frais de chantier / supervision (${Math.round(fraisP*100)}%)</td><td style="text-align:right;">${fmt(frais)}</td></tr>
+            <tr style="background:#f0f4fb;"><td style="font-weight:700;">Sous-total après frais</td><td style="text-align:right;font-weight:700;">${fmt(sousTotal1)}</td></tr>
+            <tr><td>Contingence / imprévus (${Math.round(contingP*100)}%)</td><td style="text-align:right;">${fmt(conting)}</td></tr>
+            <tr style="background:#f0f4fb;"><td style="font-weight:700;">Sous-total après contingence</td><td style="text-align:right;font-weight:700;">${fmt(sousTotal2)}</td></tr>
+
+            <tr style="background:#f8f9fc;">
+              <td colspan="2" style="font-weight:700;color:var(--bleu);padding:10px 14px 4px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Marge & Prix de vente</td>
+            </tr>
+            <tr><td>Marge bénéficiaire entrepreneur (${Math.round(margeP*100)}%)</td><td style="text-align:right;color:var(--vert);font-weight:600;">${fmt(marge)}</td></tr>
+            <tr style="background:#e8f0fb;"><td style="font-weight:700;color:var(--bleu);">Prix de vente avant taxes</td><td style="text-align:right;font-weight:700;color:var(--bleu);font-size:16px;">${fmt(avantTaxes)}</td></tr>
+
+            <tr style="background:#f8f9fc;">
+              <td colspan="2" style="font-weight:700;color:var(--bleu);padding:10px 14px 4px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Taxes — ${taxLabel}</td>
+            </tr>
+            ${tps>0?`<tr><td>TPS (5%)</td><td style="text-align:right;">${fmt(tps)}</td></tr>`:''}
+            ${tvq>0?`<tr><td>TVQ (9,975%)</td><td style="text-align:right;">${fmt(tvq)}</td></tr>`:''}
+            ${taxes===0?`<tr><td>Taxes</td><td style="text-align:right;">Exonéré</td></tr>`:''}
+            <tr style="background:#f0f4fb;"><td style="font-weight:700;">Total des taxes</td><td style="text-align:right;font-weight:700;">${fmt(taxes)}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <h3>Estimation totale d'exécution</h3>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-item-label">Matériaux (13 phases)</div><div class="result-item-value">${fmt(totalMat)}</div></div>
+        <div class="result-item"><div class="result-item-label">Main-d'œuvre totale</div><div class="result-item-value">${fmt(totalMO)}</div></div>
+        <div class="result-item"><div class="result-item-label">Frais + contingence</div><div class="result-item-value">${fmt(frais+conting)}</div></div>
+        <div class="result-item"><div class="result-item-label">Marge entrepreneur</div><div class="result-item-value">${fmt(marge)}</div></div>
+        <div class="result-item"><div class="result-item-label">TPS (5%)</div><div class="result-item-value">${fmt(tps)}</div></div>
+        <div class="result-item"><div class="result-item-label">TVQ (9,975%)</div><div class="result-item-value">${fmt(tvq)}</div></div>
+        <div class="result-item" style="background:rgba(212,160,23,0.30);">
+          <div class="result-item-label" style="font-size:12px;">TOTAL TTC — COÛT D'EXÉCUTION</div>
+          <div class="result-item-value" style="font-size:28px;font-weight:800;">${fmt(grandTotal)}</div>
+        </div>
+        <div class="result-item">
+          <div class="result-item-label">Prix / m² habitable</div>
+          <div class="result-item-value">${g('p-hab')>0?(grandTotal/g('p-hab')).toFixed(0)+' $/m²':'— (entrez superficie)'}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+}
+
+// ===================== CONFORMITE =====================
+function classerBatiment() {
+  const usage = document.getElementById('class-usage').value;
+  const etages = parseInt(document.getElementById('class-etages').value)||1;
+  const sup = parseFloat(document.getElementById('class-sup').value)||0;
+  if (!usage) { document.getElementById('class-resultat').innerHTML = ''; return; }
+
+  const reqs = [];
+  let niveau = 'Partie 9';
+  if (sup > 600 || etages > 3 || !['C'].includes(usage[0])) niveau = 'Partie 3';
+
+  reqs.push({label:'Classification CNB', val:`Usage ${usage}`, color:'info'});
+  reqs.push({label:'Partie applicable du CNB', val:niveau, color: niveau==='Partie 9'?'success':'warning'});
+  if (niveau==='Partie 3') {
+    reqs.push({label:'Ingénieur de structure', val:'Requis (OIQ)', color:'danger'});
+    reqs.push({label:'Architecte', val:'Requis (OAQ)', color:'danger'});
+  }
+  if (etages > 6) reqs.push({label:'Gicleurs automatiques', val:'Obligatoires (>6 étages)', color:'danger'});
+  if (['A2','B1'].includes(usage)) reqs.push({label:'Sorties de secours', val:'2 min. — analyse évacuation requise', color:'warning'});
+  reqs.push({label:'Accessibilité universelle', val: usage==='C' && etages===1 ? 'Non requis (maison uni.)':'Requis — Art. 3.8 CNB', color:'info'});
+  reqs.push({label:'Permis municipal', val:'Requis avant début des travaux', color:'warning'});
+
+  document.getElementById('class-resultat').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;">
+      ${reqs.map(r=>`
+        <div style="padding:12px 14px;border-radius:8px;border:1.5px solid #eaecf0;background:white;">
+          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">${r.label}</div>
+          <div style="font-weight:600;font-size:14px;"><span class="badge badge-${r.color}">${r.val}</span></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ===================== TAXES =====================
+function calculerTaxes() {
+  const montant = parseFloat(document.getElementById('tax-montant').value)||0;
+  const sens = document.getElementById('tax-sens').value;
+  const type = document.getElementById('tax-type').value;
+  const tpsR = 0.05, tvqR = 0.09975;
+  let avant, tps, tvq, total;
+  if (sens === 'ajout') {
+    avant = montant;
+    tps = type!=='tvq' ? avant * tpsR : 0;
+    tvq = type!=='tps' ? avant * tvqR : 0;
+    total = avant + tps + tvq;
+  } else {
+    const rate = type==='both' ? 1.14975 : type==='tps' ? 1.05 : 1.09975;
+    avant = montant / rate;
+    tps = type!=='tvq' ? avant * tpsR : 0;
+    tvq = type!=='tps' ? avant * tvqR : 0;
+    total = montant;
+  }
+  document.getElementById('t-avant').textContent = fmt(avant);
+  document.getElementById('t-tps').textContent = fmt(tps);
+  document.getElementById('t-tvq').textContent = fmt(tvq);
+  document.getElementById('t-total-tax').textContent = fmt(total);
+}
+
+function calculerMarge() {
+  const cout = parseFloat(document.getElementById('m-cout').value)||0;
+  const vente = parseFloat(document.getElementById('m-vente').value)||0;
+  const profit = vente - cout;
+  const marge = vente > 0 ? profit/vente*100 : 0;
+  const markup = cout > 0 ? profit/cout*100 : 0;
+  const facteur = cout > 0 ? vente/cout : 0;
+  document.getElementById('m-profit').textContent = fmt(profit);
+  document.getElementById('m-marge-pct').textContent = marge.toFixed(1)+'%';
+  document.getElementById('m-markup').textContent = markup.toFixed(1)+'%';
+  document.getElementById('m-facteur').textContent = facteur.toFixed(2)+'x';
+}
+
+// ===================== UTILS =====================
+function fmt(n) {
+  return (Math.round((n||0)*100)/100).toLocaleString('fr-CA', {minimumFractionDigits:2, maximumFractionDigits:2})+' $';
+}
+
+// ===================== INIT =====================
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('s-date').value = new Date().toISOString().split('T')[0];
+  ajouterLigne('Main-d\'œuvre — Charpenterie', 40, 'h', 52);
+  ajouterLigne('Matériaux — Ossature bois', 1, 'forfait', 3200);
+  ajouterLigne('Matériaux — Isolation', 1, 'forfait', 1800);
+  ajouterLigne('Sous-traitant — Électricité', 1, 'forfait', 4500);
+  calculerMO();
+  calculerTaxes();
+  recalcAll();
+  initTaches();
+  initPhasesExec();
+  renderComparatif();
+  renderGantt();
+  const ganttDateEl = document.getElementById('gantt-debut');
+  if(ganttDateEl) { ganttDateEl.value = new Date().toISOString().split('T')[0]; renderGantt(); }
+});
+
+// ===================== GANTT / EXÉCUTION =====================
+const COULEURS_STATUT = {
+  'afaire':   {bar:'#c8d8f0', txt:'#1A5EA8', label:'À faire'},
+  'encours':  {bar:'#F0C040', txt:'#7a5c00', label:'En cours'},
+  'termine':  {bar:'#2ECC71', txt:'#145a32', label:'Terminé'},
+  'retard':   {bar:'#e74c3c', txt:'#7b241c', label:'Retard'},
+  'attente':  {bar:'#cccccc', txt:'#555',    label:'En attente'},
+};
+
+let taches = [];
+let tacheId = 0;
+
+const TACHES_DEFAULT = [
+  {nom:'Débroussaillage & préparation',  debut:0,  duree:3,  resp:'Équipe terrain',   statut:'afaire', avance:0,  phase:'1'},
+  {nom:'Implantation / piquetage',       debut:2,  duree:2,  resp:'Arpenteur',         statut:'afaire', avance:0,  phase:'2'},
+  {nom:'Fouille & excavation',           debut:4,  duree:5,  resp:'Excavateur',        statut:'afaire', avance:0,  phase:'3'},
+  {nom:'Drain français & granulat',      debut:8,  duree:2,  resp:'Excavateur',        statut:'afaire', avance:0,  phase:'3'},
+  {nom:'Semelles (coffrage + bétonnage)',debut:10, duree:3,  resp:'Bétonnier',         statut:'afaire', avance:0,  phase:'4'},
+  {nom:'Murs de fondation',              debut:13, duree:5,  resp:'Bétonnier',         statut:'afaire', avance:0,  phase:'4'},
+  {nom:'Imperméabilisation & remblai',   debut:18, duree:2,  resp:'Équipe fondations', statut:'afaire', avance:0,  phase:'4'},
+  {nom:'Dalle de plancher RDC',          debut:20, duree:2,  resp:'Bétonnier',         statut:'afaire', avance:0,  phase:'4'},
+  {nom:'Structure bois — plancher',      debut:22, duree:4,  resp:'Charpentier',       statut:'afaire', avance:0,  phase:'5'},
+  {nom:'Structure bois — murs ext.',     debut:25, duree:5,  resp:'Charpentier',       statut:'afaire', avance:0,  phase:'5'},
+  {nom:'Structure bois — toit',          debut:29, duree:4,  resp:'Charpentier',       statut:'afaire', avance:0,  phase:'5'},
+  {nom:'Toiture (mem. + revêtement)',    debut:33, duree:4,  resp:'Couvreur',          statut:'afaire', avance:0,  phase:'6'},
+  {nom:'Isolation & pare-vapeur',        debut:35, duree:4,  resp:'Isolateur',         statut:'afaire', avance:0,  phase:'7'},
+  {nom:'Revêtement extérieur',           debut:38, duree:5,  resp:'Parementeur',       statut:'afaire', avance:0,  phase:'7'},
+  {nom:'Fenêtres & portes ext.',         debut:36, duree:3,  resp:'Menuisier',         statut:'afaire', avance:0,  phase:'7'},
+  {nom:'Rough-in électrique',            debut:38, duree:5,  resp:'Électricien',       statut:'afaire', avance:0,  phase:'8'},
+  {nom:'Panneau + entrée de service',    debut:42, duree:2,  resp:'Électricien',       statut:'afaire', avance:0,  phase:'8'},
+  {nom:'Rough-in plomberie',             debut:38, duree:5,  resp:'Plombier',          statut:'afaire', avance:0,  phase:'9'},
+  {nom:'Chauffe-eau & finitions plo.',   debut:55, duree:2,  resp:'Plombier',          statut:'afaire', avance:0,  phase:'9'},
+  {nom:'Chauffage / VRC / gaines',       debut:40, duree:5,  resp:'Mécanicien CVC',    statut:'afaire', avance:0,  phase:'10'},
+  {nom:'Cloisons & gypse',               debut:44, duree:6,  resp:'Plâtrier',          statut:'afaire', avance:0,  phase:'11'},
+  {nom:'Peinture',                        debut:52, duree:5,  resp:'Peintre',           statut:'afaire', avance:0,  phase:'12'},
+  {nom:'Carrelage & plancher',           debut:54, duree:5,  resp:'Carreleur',         statut:'afaire', avance:0,  phase:'12'},
+  {nom:'Armoires & comptoirs',           debut:57, duree:4,  resp:'Menuisier',         statut:'afaire', avance:0,  phase:'12'},
+  {nom:'Finitions élec. (prises, lum.)', debut:58, duree:3,  resp:'Électricien',       statut:'afaire', avance:0,  phase:'12'},
+  {nom:'Finitions plo. (robinets...)',   debut:58, duree:2,  resp:'Plombier',          statut:'afaire', avance:0,  phase:'12'},
+  {nom:'Nettoyage & inspection finale',  debut:61, duree:2,  resp:'Chargé projet',     statut:'afaire', avance:0,  phase:'12'},
+  {nom:'Aménagement extérieur',          debut:60, duree:5,  resp:'Paysagiste',        statut:'afaire', avance:0,  phase:'13'},
+];
+
+function initTaches(){
+  taches = TACHES_DEFAULT.map((t,i) => ({...t, id: ++tacheId}));
+}
+
+function ajouterTache(){
+  const dernierDebut = taches.length>0 ? Math.max(...taches.map(t=>t.debut+t.duree)) : 0;
+  taches.push({id:++tacheId, nom:'Nouvelle tâche', debut:dernierDebut, duree:3, resp:'', statut:'afaire', avance:0, phase:''});
+  renderGantt();
+}
+
+function supprimerTache(id){
+  id=parseInt(id); if(isNaN(id)) return;
+  taches=taches.filter(t=>t.id!==id);
+  renderGantt();
+}
+
+function updateTache(id, field, val){
+  id=parseInt(id); if(isNaN(id)) return;
+  const allowed=['nom','debut','duree','resp','statut','avance','phase'];
+  if(!allowed.includes(field)) return;
+  const t=taches.find(t=>t.id===id);
+  if(!t) return;
+  if(field==='debut'||field==='duree'){
+    const n=parseInt(val); t[field]=isNaN(n)||n<0?0:Math.min(n,999);
+  } else if(field==='avance'){
+    const n=parseInt(val); t[field]=isNaN(n)?0:Math.max(0,Math.min(100,n));
+  } else if(field==='nom'||field==='resp'){
+    t[field]=String(val).slice(0,80);
+  } else if(field==='statut'){
+    if(Object.keys(COULEURS_STATUT).includes(val)) t[field]=val;
+  } else if(field==='phase'){
+    t[field]=String(val).slice(0,5);
+  }
+  renderGantt();
+}
+
+function resetTaches(){
+  tacheId=0;
+  initTaches();
+  renderGantt();
+}
+
+function renderGantt(){
+  renderTaches();
+  renderDiagramme();
+  renderSummary();
+}
+
+function renderTaches(){
+  const tbody=document.getElementById('taches-tbody');
+  if(!tbody) return;
+  tbody.innerHTML=taches.map(t=>`
+    <tr>
+      <td style="color:var(--bleu);font-weight:700;">${t.phase||'—'}</td>
+      <td><input type="text" value="${esc(t.nom)}" maxlength="80" style="width:100%;font-size:12px;" oninput="updateTache(${t.id},'nom',this.value)"></td>
+      <td><input type="number" value="${t.debut}" min="0" max="999" style="width:70px;" oninput="updateTache(${t.id},'debut',this.value)"></td>
+      <td><input type="number" value="${t.duree}" min="1" max="999" style="width:65px;" oninput="updateTache(${t.id},'duree',this.value)"></td>
+      <td><input type="text" value="${esc(t.resp)}" maxlength="30" style="width:100%;font-size:12px;" oninput="updateTache(${t.id},'resp',this.value)"></td>
+      <td>
+        <select style="width:100%;font-size:12px;" onchange="updateTache(${t.id},'statut',this.value)">
+          ${Object.entries(COULEURS_STATUT).map(([k,v])=>`<option value="${k}" ${t.statut===k?'selected':''}>${v.label}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <input type="number" value="${t.avance}" min="0" max="100" style="width:45px;font-size:12px;" oninput="updateTache(${t.id},'avance',this.value)">
+          <span style="font-size:11px;color:#999;">%</span>
+        </div>
+      </td>
+      <td><button class="line-delete" onclick="supprimerTache(${t.id})">✕</button></td>
+    </tr>
+  `).join('');
+}
+
+function renderDiagramme(){
+  const container=document.getElementById('gantt-inner');
+  if(!container||taches.length===0){
+    if(container) container.innerHTML='<div style="padding:40px;text-align:center;color:#aaa;">Aucune tâche définie</div>';
+    return;
+  }
+
+  const unite=document.getElementById('gantt-unite').value;
+  const joursSem=parseInt(document.getElementById('gantt-jours-sem').value)||5;
+  const dateDebut=document.getElementById('gantt-debut').value;
+
+  const maxJour=Math.max(...taches.map(t=>t.debut+t.duree))+5;
+  const CELL = unite==='mois' ? 36 : 52; // px par unité
+  const ROW = 34; // hauteur ligne
+  const LABEL_W = 220; // largeur colonne noms
+  const HEADER_H = 48;
+
+  // Calcul colonnes selon unité
+  let cols=[];
+  if(unite==='semaine'){
+    const nbSem=Math.ceil(maxJour/joursSem)+2;
+    for(let s=0;s<nbSem;s++){
+      let label='S'+(s+1);
+      if(dateDebut){
+        const d=new Date(dateDebut);
+        d.setDate(d.getDate()+s*7);
+        label=d.toLocaleDateString('fr-CA',{month:'short',day:'numeric'});
+      }
+      cols.push({label, jourDebut:s*joursSem, jourFin:(s+1)*joursSem});
+    }
+  } else {
+    const nbMois=Math.ceil(maxJour/22)+2;
+    for(let m=0;m<nbMois;m++){
+      let label='M'+(m+1);
+      if(dateDebut){
+        const d=new Date(dateDebut);
+        d.setMonth(d.getMonth()+m);
+        label=d.toLocaleDateString('fr-CA',{month:'long',year:'2-digit'});
+      }
+      cols.push({label, jourDebut:m*22, jourFin:(m+1)*22});
+    }
+  }
+
+  const totalW = LABEL_W + cols.length*CELL;
+  const totalH = HEADER_H + taches.length*ROW + 8;
+
+  // Jour actuel (jour 0 = dateDebut)
+  let aujourdhui = -1;
+  if(dateDebut){
+    const d0=new Date(dateDebut), dN=new Date();
+    const diffMs=dN-d0;
+    if(diffMs>=0) aujourdhui=Math.floor(diffMs/(1000*60*60*24));
+  }
+
+  // Convertir jour en px
+  const jourToPx = j => LABEL_W + (j/maxJour)*(cols.length*CELL);
+
+  let svg = `<svg width="${totalW}" height="${totalH}" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif;display:block;">`;
+
+  // Fond
+  svg+=`<rect width="${totalW}" height="${totalH}" fill="#f8f9fc"/>`;
+
+  // En-tête zone label
+  svg+=`<rect x="0" y="0" width="${LABEL_W}" height="${HEADER_H}" fill="#0D3B6E"/>`;
+  svg+=`<text x="12" y="30" fill="white" font-size="12" font-weight="600">Phase / Tâche</text>`;
+
+  // En-tête colonnes temporelles
+  cols.forEach((col,i)=>{
+    const x=LABEL_W+i*CELL;
+    svg+=`<rect x="${x}" y="0" width="${CELL}" height="${HEADER_H}" fill="${i%2===0?'#0D3B6E':'#1A5EA8'}"/>`;
+    const label=col.label.length>9?col.label.slice(0,8)+'…':col.label;
+    svg+=`<text x="${x+CELL/2}" y="20" text-anchor="middle" fill="white" font-size="10" font-weight="600">${label}</text>`;
+    // Numéro semaine/mois
+    svg+=`<text x="${x+CELL/2}" y="38" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">${unite==='semaine'?'S'+(i+1):'M'+(i+1)}</text>`;
+  });
+
+  // Grille alternée lignes
+  taches.forEach((t,i)=>{
+    const y=HEADER_H+i*ROW;
+    svg+=`<rect x="0" y="${y}" width="${totalW}" height="${ROW}" fill="${i%2===0?'white':'#f5f6fa'}"/>`;
+    // Séparateur vertical colonnes
+    cols.forEach((_,ci)=>{
+      svg+=`<line x1="${LABEL_W+ci*CELL}" y1="${y}" x2="${LABEL_W+ci*CELL}" y2="${y+ROW}" stroke="#eaecf0" stroke-width="0.5"/>`;
+    });
+  });
+
+  // Ligne de séparation label/grille
+  svg+=`<line x1="${LABEL_W}" y1="${HEADER_H}" x2="${LABEL_W}" y2="${totalH}" stroke="#0D3B6E" stroke-width="1.5"/>`;
+
+  // Ligne aujourd'hui
+  if(aujourdhui>=0 && aujourdhui<=maxJour){
+    const xAj=jourToPx(aujourdhui);
+    svg+=`<line x1="${xAj}" y1="${HEADER_H}" x2="${xAj}" y2="${totalH}" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>`;
+    svg+=`<rect x="${xAj-18}" y="${HEADER_H+2}" width="36" height="14" rx="4" fill="#e74c3c"/>`;
+    svg+=`<text x="${xAj}" y="${HEADER_H+12}" text-anchor="middle" fill="white" font-size="9" font-weight="700">Auj.</text>`;
+  }
+
+  // BARRES DE TÂCHES
+  taches.forEach((t,i)=>{
+    const y=HEADER_H+i*ROW;
+    const xBar=jourToPx(t.debut);
+    const wBar=Math.max((t.duree/maxJour)*(cols.length*CELL), 8);
+    const col=COULEURS_STATUT[t.statut]||COULEURS_STATUT['afaire'];
+    const barH=20;
+    const barY=y+(ROW-barH)/2;
+
+    // Barre principale
+    svg+=`<rect x="${xBar}" y="${barY}" width="${wBar}" height="${barH}" rx="4" fill="${col.bar}" stroke="${col.bar.replace('c8d','a0b')}" stroke-width="0.5"/>`;
+
+    // Barre d'avancement
+    if(t.avance>0){
+      const wAdv=wBar*(t.avance/100);
+      svg+=`<rect x="${xBar}" y="${barY}" width="${wAdv}" height="${barH}" rx="4" fill="${col.txt}" opacity="0.35"/>`;
+    }
+
+    // Texte dans la barre (si espace suffisant)
+    if(wBar>60){
+      const label=t.avance>0?`${t.avance}%`:'';
+      svg+=`<text x="${xBar+wBar/2}" y="${barY+13}" text-anchor="middle" fill="${col.txt}" font-size="10" font-weight="600">${label}</text>`;
+    }
+
+    // Label tâche (colonne gauche)
+    const phaseLabel=t.phase?`[${t.phase}] `:'';
+    const nomTronq=(phaseLabel+t.nom).length>32?(phaseLabel+t.nom).slice(0,31)+'…':phaseLabel+t.nom;
+    svg+=`<text x="10" y="${y+ROW/2+4}" fill="#1a1a2e" font-size="12">${nomTronq}</text>`;
+
+    // Resp (petite indication à droite de la barre)
+    if(t.resp && wBar>0){
+      const xResp=xBar+wBar+4;
+      if(xResp+60<totalW){
+        svg+=`<text x="${xResp}" y="${barY+13}" fill="#999" font-size="10">${t.resp.length>14?t.resp.slice(0,13)+'…':t.resp}</text>`;
+      }
+    }
+  });
+
+  // Bordure zone labels
+  svg+=`<rect x="0" y="${HEADER_H}" width="${LABEL_W}" height="${totalH-HEADER_H}" fill="none" stroke="#dde1e9" stroke-width="0.5"/>`;
+
+  svg+='</svg>';
+  container.innerHTML=svg;
+}
+
+function renderSummary(){
+  const el=document.getElementById('gantt-summary');
+  if(!el||taches.length===0) return;
+
+  const total=taches.length;
+  const termine=taches.filter(t=>t.statut==='termine').length;
+  const encours=taches.filter(t=>t.statut==='encours').length;
+  const retard=taches.filter(t=>t.statut==='retard').length;
+  const afaire=taches.filter(t=>t.statut==='afaire'||t.statut==='attente').length;
+  const avanceMoy=total>0?Math.round(taches.reduce((s,t)=>s+t.avance,0)/total):0;
+  const dureeTotal=taches.length>0?Math.max(...taches.map(t=>t.debut+t.duree)):0;
+  const joursSem=parseInt(document.getElementById('gantt-jours-sem').value)||5;
+  const nbSemaines=Math.ceil(dureeTotal/joursSem);
+
+  el.innerHTML=`
+    <div class="grid-4" style="margin-top:12px;">
+      <div class="metric-card green"><div class="metric-label">Terminées</div><div class="metric-value">${termine}<span style="font-size:14px;font-weight:400;"> / ${total}</span></div></div>
+      <div class="metric-card gold"><div class="metric-label">En cours</div><div class="metric-value">${encours}</div></div>
+      <div class="metric-card red"><div class="metric-label">En retard</div><div class="metric-value">${retard}</div></div>
+      <div class="metric-card"><div class="metric-label">Avancement global</div><div class="metric-value">${avanceMoy}%</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${avanceMoy}%;background:${avanceMoy>=100?'var(--vert)':avanceMoy>50?'var(--or)':'var(--bleu-clair)'};"></div></div>
+      </div>
+      <div class="metric-card"><div class="metric-label">Durée totale projet</div><div class="metric-value">${dureeTotal} <span style="font-size:14px;font-weight:400;">jours</span></div><div class="metric-sub">≈ ${nbSemaines} semaines</div></div>
+      <div class="metric-card"><div class="metric-label">À planifier</div><div class="metric-value">${afaire}</div><div class="metric-sub">tâches restantes</div></div>
+    </div>
+  `;
+}
+
+// ===================== COMPARATIF BUDGÉTAIRE (INDÉPENDANT) =====================
+let phasesExec = [];
+let phaseExecId = 0;
+
+const PHASES_EXEC_DEFAULT = [
+  {nom:'Ph.1 — Débroussaillage & préparation',  soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.2 — Implantation & piquetage',        soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.3 — Fouille & excavation',            soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.4 — Fondations & béton',              soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.5 — Structure bois',                  soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.6 — Toiture',                         soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.7 — Enveloppe (isolation, rev., fen.)',soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.8 — Électricité',                     soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.9 — Plomberie',                       soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.10 — Chauffage / CVC',                soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.11 — Cloisons & gypse',               soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.12 — Finitions intérieures',          soumis:0, reel:0, statut:'afaire'},
+  {nom:'Ph.13 — Aménagement extérieur',          soumis:0, reel:0, statut:'afaire'},
+];
+
+function initPhasesExec(){
+  phasesExec = PHASES_EXEC_DEFAULT.map(p => ({...p, id: ++phaseExecId}));
+}
+
+function ajouterPhaseExec(){
+  phasesExec.push({id:++phaseExecId, nom:'Nouvelle phase', soumis:0, reel:0, statut:'afaire'});
+  renderComparatif();
+}
+
+function supprimerPhaseExec(id){
+  id=parseInt(id); if(isNaN(id)) return;
+  phasesExec=phasesExec.filter(p=>p.id!==id);
+  renderComparatif();
+}
+
+function updatePhaseExec(id, field, val){
+  id=parseInt(id); if(isNaN(id)) return;
+  const allowed=['nom','soumis','reel','statut'];
+  if(!allowed.includes(field)) return;
+  const p=phasesExec.find(p=>p.id===id);
+  if(!p) return;
+  if(field==='soumis'||field==='reel'){
+    const n=parseFloat(val); p[field]=isNaN(n)||n<0?0:Math.min(n,99999999);
+  } else if(field==='nom'){
+    p[field]=String(val).slice(0,100);
+  } else if(field==='statut'){
+    if(Object.keys(COULEURS_STATUT).includes(val)) p[field]=val;
+  }
+  renderComparatif();
+}
+
+function resetPhasesExec(){
+  phaseExecId=0;
+  initPhasesExec();
+  renderComparatif();
+}
+
+function fmtEcart(n){
+  const sign = n>0?'+':n<0?'':'';
+  return sign+(Math.round(Math.abs(n)*100)/100).toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})+' $';
+}
+
+function renderComparatif(){
+  const tbody = document.getElementById('exec-tbody');
+  const tfoot = document.getElementById('exec-tfoot');
+  const resume = document.getElementById('exec-resume');
+  if(!tbody) return;
+
+  let totalSoumis=0, totalReel=0, nbTermine=0, nbRetard=0, nbEnCours=0;
+
+  tbody.innerHTML = phasesExec.map(p => {
+    const soumis=p.soumis||0, reel=p.reel||0;
+    const ecart=reel-soumis;
+    const ecartPct=soumis>0?(ecart/soumis*100):0;
+    totalSoumis+=soumis; totalReel+=reel;
+    if(p.statut==='termine') nbTermine++;
+    else if(p.statut==='retard') nbRetard++;
+    else if(p.statut==='encours') nbEnCours++;
+    let ecartColor='#555', ecartBg='transparent';
+    if(reel>0&&soumis>0){
+      if(ecart>0){ecartColor='#C0392B';ecartBg='#fde8e6';}
+      else if(ecart<0){ecartColor='#1B6B3A';ecartBg='#e6f7ee';}
+      else{ecartColor='#555';ecartBg='#f0f4fb';}
+    }
+    const maxVal=Math.max(soumis,reel,1);
+    const wS=Math.round((soumis/maxVal)*80);
+    const wR=Math.round((reel/maxVal)*80);
+    const colR=ecart>0?'#e74c3c':ecart<0?'#2ECC71':'#1A5EA8';
+    const statutOpts=Object.entries(COULEURS_STATUT).map(([k,v])=>`<option value="${k}" ${p.statut===k?'selected':''}>${v.label}</option>`).join('');
+    return `<tr>
+      <td style="color:var(--bleu);font-weight:700;font-size:12px;">${p.id}</td>
+      <td><input type="text" value="${esc(p.nom)}" maxlength="100" style="width:100%;font-size:12px;" oninput="updatePhaseExec(${p.id},'nom',this.value)"></td>
+      <td>
+        <input type="number" value="${soumis}" min="0" step="0.01" style="width:100%;font-size:12px;" oninput="updatePhaseExec(${p.id},'soumis',this.value)">
+        <div style="background:#eaecf0;height:4px;border-radius:2px;margin-top:4px;"><div style="width:${wS}px;height:4px;background:#1A5EA8;border-radius:2px;"></div></div>
+      </td>
+      <td>
+        <input type="number" value="${reel}" min="0" step="0.01" style="width:100%;font-size:12px;" oninput="updatePhaseExec(${p.id},'reel',this.value)">
+        <div style="background:#eaecf0;height:4px;border-radius:2px;margin-top:4px;"><div style="width:${wR}px;height:4px;background:${colR};border-radius:2px;"></div></div>
+      </td>
+      <td style="text-align:right;"><span style="background:${ecartBg};color:${ecartColor};font-weight:600;font-size:12px;padding:3px 7px;border-radius:5px;white-space:nowrap;">${reel===0&&soumis===0?'—':fmtEcart(ecart)}</span></td>
+      <td style="text-align:right;"><span style="color:${ecartColor};font-weight:600;font-size:12px;">${reel===0&&soumis===0?'—':(ecart>=0?'+':'')+ecartPct.toFixed(1)+'%'}</span></td>
+      <td><select style="width:100%;font-size:12px;" onchange="updatePhaseExec(${p.id},'statut',this.value)">${statutOpts}</select></td>
+      <td><button class="line-delete" onclick="supprimerPhaseExec(${p.id})">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  const totalEcart=totalReel-totalSoumis;
+  const totalEcartPct=totalSoumis>0?(totalEcart/totalSoumis*100):0;
+  const colTotal=totalEcart>0?'#C0392B':totalEcart<0?'#1B6B3A':'#555';
+  const bgTotal=totalEcart>0?'#fde8e6':totalEcart<0?'#e6f7ee':'#f0f4fb';
+  if(tfoot) tfoot.innerHTML=`<tr style="background:#0D3B6E;color:white;font-weight:700;">
+    <td colspan="2" style="color:white;font-size:13px;">TOTAUX</td>
+    <td style="color:#F0C040;font-size:13px;">${fmt(totalSoumis)}</td>
+    <td style="color:#F0C040;font-size:13px;">${fmt(totalReel)}</td>
+    <td style="text-align:right;"><span style="background:${bgTotal};color:${colTotal};padding:3px 8px;border-radius:5px;font-size:13px;">${fmtEcart(totalEcart)}</span></td>
+    <td style="text-align:right;color:${totalEcart>0?'#ff9999':totalEcart<0?'#90ee90':'white'};font-size:13px;">${(totalEcart>=0?'+':'')+totalEcartPct.toFixed(1)}%</td>
+    <td colspan="2"></td>
+  </tr>`;
+
+  if(resume){
+    const phasesTerminees=phasesExec.filter(p=>p.statut==='termine');
+    const coutTermine=phasesTerminees.reduce((s,p)=>s+p.reel,0);
+    const soumisTermine=phasesTerminees.reduce((s,p)=>s+p.soumis,0);
+    const statIcon=totalEcart>0?'🔴':totalEcart<0?'🟢':'🔵';
+    const statLabel=totalEcart>0?'Dépassement de budget':totalEcart<0?'Économie réalisée':'Dans le budget';
+    resume.innerHTML=`
+      <div class="grid-4" style="margin-top:4px;">
+        <div class="metric-card"><div class="metric-label">Total soumis</div><div class="metric-value" style="font-size:20px;color:var(--bleu);">${fmt(totalSoumis)}</div></div>
+        <div class="metric-card gold"><div class="metric-label">Total coût réel</div><div class="metric-value" style="font-size:20px;">${fmt(totalReel)}</div></div>
+        <div class="metric-card ${totalEcart>0?'red':totalEcart<0?'green':''}">
+          <div class="metric-label">${statIcon} ${statLabel}</div>
+          <div class="metric-value" style="font-size:20px;">${fmt(Math.abs(totalEcart))}</div>
+          <div class="metric-sub">${(totalEcart>=0?'+':'')+totalEcartPct.toFixed(1)}% vs soumission</div>
+        </div>
+        <div class="metric-card"><div class="metric-label">Phases terminées</div><div class="metric-value" style="font-size:20px;">${nbTermine}<span style="font-size:13px;font-weight:400;"> / ${phasesExec.length}</span></div></div>
+      </div>
+      <div style="margin-top:12px;padding:12px 16px;border-radius:8px;background:${totalEcart>0?'#fde8e6':totalEcart<0?'#e6f7ee':'#e8f0fb'};border-left:4px solid ${totalEcart>0?'var(--rouge)':totalEcart<0?'var(--vert)':'var(--bleu-clair)'};">
+        <div style="font-weight:700;font-size:14px;color:${totalEcart>0?'#C0392B':totalEcart<0?'#1B6B3A':'#1A5EA8'};">
+          ${statIcon} ${statLabel} : ${totalEcart>=0?'+':''}${fmtEcart(totalEcart)} (${(totalEcart>=0?'+':'')+totalEcartPct.toFixed(1)}%)
+        </div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">
+          ${totalEcart>0?'Budget dépassé — Analyser les phases en rouge.':totalEcart<0?'Projet sous budget — Économie réalisée.':'Projet dans le budget soumis.'}
+        </div>
+      </div>`;
+  }
+}
+
+// ===================== INIT GANTT ======================
+  initTaches();
+  initPhasesExec();
+  renderComparatif();
+  renderGantt();
+  const ganttDateEl = document.getElementById('gantt-debut');
+  if(ganttDateEl) ganttDateEl.value = new Date().toISOString().split('T')[0];
+  renderGantt();
+
+  // ===================== PWA SERVICE WORKER ======================
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('✅ KZO PWA: Service Worker enregistré', reg.scope))
+        .catch(err => console.log('❌ KZO PWA: Erreur SW', err));
+    });
+  }
+</script>
+</body>
+</html>
